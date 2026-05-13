@@ -1,10 +1,25 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./styles/global.css";
-import App from "./App.tsx";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import keycloak from "./auth/keycloak";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+keycloak
+  .init({
+    onLoad: "login-required", 
+    pkceMethod: "S256",
+    checkLoginIframe: false,
+  })
+  .then((authenticated) => {
+    if (!authenticated) {
+      console.log("Not authenticated");
+    } else {
+      console.log("Authenticated");
+      console.log("Token:", keycloak.token);
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  });
