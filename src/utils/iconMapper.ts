@@ -1,0 +1,38 @@
+import {
+  Car,
+  Bus,
+  Pizza,
+  Wallet,
+  House,
+  PiggyBank,
+  BriefcaseMedical,
+  Utensils,
+  ShoppingBag,
+  Gamepad,
+  ReceiptCent,
+  BriefcaseBusiness,
+  Cable,
+  DollarSign,
+  HandCoins,
+  Cat,
+  type LucideIcon,
+} from "lucide-react";
+
+export const iconMap: Record<string, LucideIcon> = {
+  Car,
+  Bus,
+  Pizza,
+  Wallet,
+  House,
+  PiggyBank,
+  BriefcaseMedical,
+  Utensils,
+  ShoppingBag,
+  Gamepad,
+  ReceiptCent,
+  BriefcaseBusiness,
+  Cable,
+  DollarSign,
+  HandCoins,
+  Cat
+};
