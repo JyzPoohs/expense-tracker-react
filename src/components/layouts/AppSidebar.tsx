@@ -57,13 +57,17 @@ const menuItems = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader>
-        <img src={logo}alt="TorchEye Ledger Logo" />
+      <SidebarHeader className="p-5">
+        <img
+          src={logo}
+          className="w-32 h-18 m-auto"
+          alt="TorchEye Ledger Logo"
+        />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            {menuItems.map((item, index) => (
+        {menuItems.map((item, index) => (
+          <SidebarGroup>
+            <SidebarGroupContent>
               <SidebarMenuItem key={index}>
                 <SidebarMenuButton asChild>
                   <a href={item.url}>
@@ -72,9 +76,9 @@ export function AppSidebar() {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            ))}
-          </SidebarGroupContent>
-        </SidebarGroup>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
