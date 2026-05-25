@@ -4,11 +4,9 @@ import { TransactionListPage } from "@/pages/transaction/TransactionListPage";
 
 export const AppRoutes = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/transactions" element={<TransactionListPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/transactions" element={<TransactionListPage />} />
+    </Routes>
   );
 };

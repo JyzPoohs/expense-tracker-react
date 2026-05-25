@@ -17,68 +17,96 @@ import {
   Landmark,
   Bell,
   Settings,
+  ChartArea,
 } from "lucide-react";
 
 import logo from "../../assets/TorchEye_Ledger_logo.png";
+import { NavLink } from "react-router-dom";
+import type { MenuItem } from "@/types/menuItems";
 
-const menuItems = [
+const menuItems: MenuItem[] = [
   {
     label: "Dashboard",
     icon: <LayoutDashboard />,
     url: "/",
+    accessRoles: ["user", "admin"],
+  },
+  {
+    label: "Analytics",
+    icon: <ChartArea />,
+    url: "/analytics",
+    accessRoles: ["admin"],
   },
   {
     label: "Profile",
     icon: <User2 />,
     url: "/profile",
+    accessRoles: ["user", "admin"],
   },
   {
     label: "Transactions",
     icon: <ArrowRightLeftIcon />,
     url: "/transactions",
+    accessRoles: ["user", "admin"],
   },
   {
     label: "Accounts",
     icon: <Landmark />,
     url: "/accounts",
+    accessRoles: ["user", "admin"],
   },
   {
     label: "Notifications",
     icon: <Bell />,
     url: "/notifications",
+    accessRoles: ["user", "admin"],
   },
   {
     label: "Settings",
     icon: <Settings />,
     url: "/settings",
+    accessRoles: ["user", "admin"],
   },
 ];
 
 export function AppSidebar() {
+  const currentUserRoles = ["user"];
+
+  const accessibleMenuItems = menuItems.filter((item) =>
+    item.accessRoles.some((role) => currentUserRoles.includes(role)),
+  );
+
   return (
     <Sidebar>
-      <SidebarHeader className="p-5">
+      <SidebarHeader className="p-4">
         <img
           src={logo}
-          className="w-32 h-18 m-auto"
+          className="w-32 h-18 object-contain mx-auto"
           alt="TorchEye Ledger Logo"
         />
       </SidebarHeader>
       <SidebarContent>
-        {menuItems.map((item, index) => (
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenuItem key={index}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    {item.icon}
-                    {item.label}
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {accessibleMenuItems.map((item, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className={({ isActive }) =>
+                        isActive ? "bg-accent font-medium" : ""
+                      }
+                    >
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>

@@ -2,11 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import keycloak from "./auth/keycloak";
-import './styles/global.css'
+import "./styles/global.css";
+import { BrowserRouter } from "react-router-dom";
 
 keycloak
   .init({
-    onLoad: "login-required", 
+    onLoad: "login-required",
     pkceMethod: "S256",
     checkLoginIframe: false,
   })
@@ -20,7 +21,9 @@ keycloak
 
     ReactDOM.createRoot(document.getElementById("root")!).render(
       <React.StrictMode>
-        <App />
-      </React.StrictMode>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </React.StrictMode>,
     );
   });
