@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import type { ColumnDef } from "@tanstack/react-table";
+
 export interface Transaction {
   id: number;
   userId: number;
@@ -8,3 +11,40 @@ export interface Transaction {
   type: string;
   remarks: string;
 }
+
+export type TransactionType = {
+  id: number;
+  note: string;
+  amount: number;
+  date: string;
+  category: string;
+  type: string;
+  remarks: string;
+};
+
+export const columns: ColumnDef<TransactionType>[] = [
+    {
+        accessorKey: "note",
+        header: "Note",
+    },
+    {
+        accessorKey: "amount",
+        header: "Amount",
+    },
+    {
+        accessorKey: "date",
+        header: "Date",
+    },
+    {
+        accessorKey: "category",
+        header: "Category",
+    },
+    {
+        accessorKey: "type",
+        header: "Type",
+    },
+    {
+        accessorKey: "remarks",
+        header: "Remarks",
+    },
+];

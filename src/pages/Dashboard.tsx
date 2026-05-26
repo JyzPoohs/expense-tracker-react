@@ -1,14 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { House } from "lucide-react";
+import { columns, type TransactionType } from "@/types/transaction";
+import { DataTable } from "@/components/layouts/DataTable";
+import { useEffect, useState } from "react";
+import { getAllTransactions } from "@/services/transactionService";
 
 export const Dashboard = () => {
+  const [transactions, setTransactions] = useState<TransactionType[]>([]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const data = await getAllTransactions(1);
+      setTransactions(data);
+    };
+    fetchTransactions();
+  }, []);
+
   return (
     <div>
       <h1>Dashboard</h1>
-      <Button>
-        <House className="mr-2 h-4 w-4" />
-        Home
-      </Button>
+      <DataTable columns={columns} data={transactions} />
     </div>
   );
 };
