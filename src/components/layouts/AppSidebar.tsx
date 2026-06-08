@@ -23,6 +23,7 @@ import {
 import logo from "../../assets/TorchEye_Ledger_logo.png";
 import { NavLink } from "react-router-dom";
 import type { MenuItem } from "@/types/menuItems";
+import { useAuth } from "@/auth/AuthProvider";
 
 const menuItems: MenuItem[] = [
   {
@@ -70,10 +71,10 @@ const menuItems: MenuItem[] = [
 ];
 
 export function AppSidebar() {
-  const currentUserRoles = ["user"];
+  const { user } = useAuth();
 
   const accessibleMenuItems = menuItems.filter((item) =>
-    item.accessRoles.some((role) => currentUserRoles.includes(role)),
+    item.accessRoles.some((role) => user?.roles.includes(role.toUpperCase())),
   );
 
   return (

@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email?: string;
   roles: string[];
@@ -7,6 +7,7 @@ export interface User {
 
 export interface AuthContextType {
   isAuthenticated: boolean;
+  isLoading: boolean;
   token: string | undefined;
   user: User | null;
   login: () => void;

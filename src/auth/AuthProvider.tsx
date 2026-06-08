@@ -13,9 +13,8 @@ interface Props {
 
 export function AuthProvider({ children }: Props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<string>();
-
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -27,12 +26,6 @@ export function AuthProvider({ children }: Props) {
       })
       .then((authenticated) => {
         setIsAuthenticated(authenticated);
-        if (!authenticated) {
-          console.log("Not authenticated");
-        } else {
-          console.log("Authenticated");
-          console.log("Token:", keycloak.token);
-        }
 
         if (authenticated) {
           setToken(keycloak.token);
@@ -40,7 +33,7 @@ export function AuthProvider({ children }: Props) {
           const parsed = keycloak.tokenParsed;
 
           setUser({
-            id: Number(parsed?.sub),
+            id: parsed?.sub as string,
             username: (parsed?.preferred_username as string) || "",
             email: parsed?.email as string,
             roles:
@@ -51,8 +44,15 @@ export function AuthProvider({ children }: Props) {
               )?.roles || [],
           });
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
+
+  setInterval(() => {
+    keycloak.updateToken(60);
+  }, 60000);
 
   const login = () => keycloak.login();
 
@@ -62,6 +62,7 @@ export function AuthProvider({ children }: Props) {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isLoading,
         token,
         user,
         login,
