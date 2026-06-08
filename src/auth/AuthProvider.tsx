@@ -11,6 +11,8 @@ interface Props {
   children: ReactNode;
 }
 
+let keycloakInitialized = false;
+
 export function AuthProvider({ children }: Props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +20,10 @@ export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (keycloakInitialized) return;
+
+    keycloakInitialized = true;
+
     keycloak
       .init({
         onLoad: "login-required",
@@ -29,6 +35,7 @@ export function AuthProvider({ children }: Props) {
 
         if (authenticated) {
           setToken(keycloak.token);
+          console.log("Token:", keycloak.token);
 
           const parsed = keycloak.tokenParsed;
 
@@ -50,9 +57,15 @@ export function AuthProvider({ children }: Props) {
       });
   }, []);
 
-  setInterval(() => {
-    keycloak.updateToken(60);
-  }, 60000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      keycloak.updateToken(60).catch(() => {
+        console.log("Token refresh failed");
+      });
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const login = () => keycloak.login();
 
