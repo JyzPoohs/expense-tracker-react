@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export interface Transaction {
