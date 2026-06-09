@@ -3,6 +3,8 @@ import { DataTable } from "@/components/layouts/DataTable";
 import { useEffect, useState } from "react";
 import { getAllTransactions } from "@/services/transactionService";
 import { useAuth } from "@/auth/AuthProvider";
+import { SummaryCard } from "@/components/sumamry/SummaryCard";
+import { summaryCards } from "@/config/SummaryCardsConfig";
 
 export const Dashboard = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -29,6 +31,11 @@ export const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">
+        {summaryCards.map((card) => (
+          <SummaryCard key={card.title} {...card} />
+        ))}
+      </div>
       <DataTable columns={columns} data={transactions} />
     </div>
   );
