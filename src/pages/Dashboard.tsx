@@ -36,7 +36,13 @@ export const Dashboard = () => {
           <SummaryCard key={card.title} {...card} />
         ))}
       </div>
-      <DataTable columns={columns} data={transactions} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        xxx
+
+        <div>
+          <DataTable columns={columns} data={transactions} />
+        </div>
+      </div>
     </div>
   );
 };
