@@ -5,6 +5,7 @@ import { getAllTransactions } from "@/services/transactionService";
 import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCards } from "@/config/SummaryCardsConfig";
+import { CreateTransactionForm } from "./transaction/CreateTransactionForm";
 
 export const Dashboard = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -30,7 +31,12 @@ export const Dashboard = () => {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <div className="flex my-5">
+        <h1>Dashboard</h1>
+        <div className="ml-auto">
+          <CreateTransactionForm />
+        </div>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">
         {summaryCards.map((card) => (
           <SummaryCard key={card.title} {...card} />
@@ -38,7 +44,6 @@ export const Dashboard = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         xxx
-
         <div>
           <DataTable columns={columns} data={transactions} />
         </div>
