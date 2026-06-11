@@ -7,7 +7,7 @@ import type { Transaction } from "@/types/transaction";
 import type { Category } from "@/types/category";
 import { CreateTransactionForm } from "./CreateTransactionForm";
 import { SelectComponent } from "@/components/component/SelectComponent";
-import { transactionTypes } from "@/types/transactionType";
+import { transactionTypes } from "@/config/TransactionType";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Car } from "lucide-react";

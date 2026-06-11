@@ -1,7 +1,9 @@
-import React from 'react'
+import { Tab } from "@/components/layouts/Tab";
 
 export const Settings = () => {
   return (
-    <div>Settings</div>
-  )
-}
+    <div className="w-full h-full mx-auto">
+      <Tab />
+    </div>
+  );
+};
