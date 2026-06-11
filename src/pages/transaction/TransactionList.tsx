@@ -5,10 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { iconMap } from "@/utils/iconMapper";
 import type { Transaction } from "@/types/transaction";
 import type { Category } from "@/types/category";
+import { CreateTransactionForm } from "./CreateTransactionForm";
+import { SelectComponent } from "@/components/component/SelectComponent";
+import { transactionTypes } from "@/types/transactionType";
+import { Button } from "@/components/ui/button";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -28,7 +34,35 @@ export const TransactionListPage = () => {
   return (
     <div className="p-3">
       <h1 className="text-center my-3">Transaction List</h1>
-      {categories && categories.length > 0 && (
+      <div className="flex gap-2">
+        <p className="my-auto">Filter: </p>
+        <SelectComponent
+          label="Type"
+          items={transactionTypes}
+          value={selectedType}
+          onChange={setSelectedType}
+        />
+        <SelectComponent
+          label="Category"
+          items={categories.map((cat) => cat.name)}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+        />
+        <Button className="bg-amber-500">Search</Button>
+        <Button
+          className="bg-amber-700"
+          onClick={() => {
+            setSelectedType("");
+            setSelectedCategory("");
+          }}
+        >
+          Clear Filter
+        </Button>
+        <div className="ml-auto">
+          <CreateTransactionForm />
+        </div>
+      </div>
+      {/* {categories && categories.length > 0 && (
         <div className="flex justify-center flex-wrap gap-2 my-3">
           {categories.map((category: Category, index: number) => {
             const IconComponent = iconMap[category.icon];
@@ -47,7 +81,7 @@ export const TransactionListPage = () => {
             );
           })}
         </div>
-      )}
+      )} */}
       {transactions && transactions.length > 0 ? (
         transactions.map((transaction: Transaction, index: number) => (
           <div
