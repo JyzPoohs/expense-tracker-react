@@ -9,6 +9,8 @@ import { CreateTransactionForm } from "./CreateTransactionForm";
 import { SelectComponent } from "@/components/component/SelectComponent";
 import { transactionTypes } from "@/types/transactionType";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Car } from "lucide-react";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -84,17 +86,29 @@ export const TransactionListPage = () => {
       )} */}
       {transactions && transactions.length > 0 ? (
         transactions.map((transaction: Transaction, index: number) => (
-          <div
-            key={transaction.id ?? index}
-            className="card mb-3 p-3 border rounded"
-          >
-            <p>Note: {transaction.note}</p>
-            <p>Amount: {transaction.amount}</p>
-            <p>Type: {transaction.type}</p>
-            <p>Category: {transaction.category}</p>
-            <p>Date: {transaction.date}</p>
-            <p>Remarks: {transaction.remarks}</p>
-          </div>
+          <>
+            <div
+              key={transaction.id ?? index}
+              className="card mb-3 p-3 flex gap-4"
+            >
+              <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
+                <Car />
+              </span>
+              <div>
+                <p>{transaction.note}</p>
+                <p className="text-sm text-muted-foreground">Remarks: {transaction.remarks}</p>
+              </div>
+
+              <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
+              {/* <p>Note: {transaction.note}</p>
+              <p>Amount: {transaction.amount}</p>
+              <p>Type: {transaction.type}</p>
+              <p>Category: {transaction.category}</p>
+              <p>Date: {transaction.date}</p>
+              <p>Remarks: {transaction.remarks}</p> */}
+            </div>
+            <Separator className="bg-amber-100" />
+          </>
         ))
       ) : (
         <p>No transactions found.</p>
