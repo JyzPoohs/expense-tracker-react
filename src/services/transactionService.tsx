@@ -2,7 +2,7 @@ import api from "../api/axios";
 
 const TRANSACTIONS_BASE_URL = "/transactions";
 
-export const getAllTransactions = async (id: number) => {
+export const getAllTransactions = async () => {
     const response = await api.get(TRANSACTIONS_BASE_URL);
     return response.data;
 }

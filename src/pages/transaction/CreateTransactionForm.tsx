@@ -26,7 +26,7 @@ export const CreateTransactionForm = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const data = await getAllCategorires(1);
+      const data = await getAllCategorires();
       setCategories(data);
     };
 

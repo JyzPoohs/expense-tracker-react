@@ -20,12 +20,12 @@ export const TransactionListPage = () => {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const data = await getAllTransactions(1);
+      const data = await getAllTransactions();
       setTransactions(data);
     };
 
     const fetchCategories = async () => {
-      const data = await getAllCategorires(1);
+      const data = await getAllCategorires();
       setCategories(data);
     };
 
