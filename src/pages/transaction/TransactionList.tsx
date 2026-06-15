@@ -62,7 +62,7 @@ export const TransactionListPage = () => {
           Clear Filter
         </Button>
         <div className="ml-auto">
-          <CreateTransactionForm />
+          <CreateTransactionForm id={1}/>
         </div>
       </div>
       {/* {categories && categories.length > 0 && (
@@ -101,7 +101,7 @@ export const TransactionListPage = () => {
               </div>
 
               <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
-              <ViewTransactionInfo/>
+              <ViewTransactionInfo transaction={transaction} />
             </div>
             <Separator className="bg-amber-100" />
           </>
