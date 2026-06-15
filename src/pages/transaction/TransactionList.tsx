@@ -11,6 +11,7 @@ import { transactionTypes } from "@/config/TransactionType";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Car } from "lucide-react";
+import { ViewTransactionInfo } from "./ViewTransactionInfo";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -100,12 +101,7 @@ export const TransactionListPage = () => {
               </div>
 
               <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
-              {/* <p>Note: {transaction.note}</p>
-              <p>Amount: {transaction.amount}</p>
-              <p>Type: {transaction.type}</p>
-              <p>Category: {transaction.category}</p>
-              <p>Date: {transaction.date}</p>
-              <p>Remarks: {transaction.remarks}</p> */}
+              <ViewTransactionInfo/>
             </div>
             <Separator className="bg-amber-100" />
           </>
