@@ -12,13 +12,9 @@ export const Dashboard = () => {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
 
   useEffect(() => {
-    if (isLoading || !isAuthenticated || !user) {
-      return;
-    }
-
     const fetchTransactions = async () => {
       try {
-        const data = await getAllTransactions(1);
+        const data = await getAllTransactions();
 
         setTransactions(data);
       } catch (error) {
@@ -27,7 +23,7 @@ export const Dashboard = () => {
     };
 
     fetchTransactions();
-  }, [isLoading, isAuthenticated, user]);
+  }, [ isAuthenticated, user]);
 
   return (
     <div>
