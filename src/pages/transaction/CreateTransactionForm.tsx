@@ -19,10 +19,40 @@ import { useEffect, useState } from "react";
 import type { Category } from "@/types/category";
 import { getAllCategorires } from "@/services/categoryService";
 import { SelectComponent } from "@/components/component/SelectComponent";
+import { createTransaction } from "@/services/transactionService";
 
 export const CreateTransactionForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedType, setSelectedType] = useState("Expense");
+  const [note, setNote] = useState("");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [remarks, setRemarks] = useState("");
+
+  const [formData, setFormData] = useState({
+    note: "",
+    amount: 0,
+    type: "",
+    category: "",
+    remarks: "",
+    date: new Date(),
+  });
+
+  const handleChange = (field: string, value: string | number | Date) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log(formData);
+
+    await createTransaction(formData);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,13 +64,13 @@ export const CreateTransactionForm = () => {
   }, []);
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button>
-            <Plus /> Add Transactions
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-sm bg-amber-1000">
+      <DialogTrigger asChild>
+        <Button>
+          <Plus /> Add Transactions
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-sm bg-amber-1000">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="text-center">Add Transaction</DialogTitle>
           </DialogHeader>
@@ -48,29 +78,29 @@ export const CreateTransactionForm = () => {
             <Field>
               <Label htmlFor="type">Type</Label>
               <RadioGroup
-                defaultValue="comfortable"
-                className="flex justify-around w-max"
+                value={formData.type}
+                onValueChange={(value) => handleChange("type", value)}
+                className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-1"
               >
                 <div className="flex items-center gap-3">
-                  <RadioGroupItem value="default" id="r1" />
-                  <Label htmlFor="r1">Expense</Label>
+                  <RadioGroupItem value="EXPENSE" id="r1" />
+                  <Label htmlFor="Expense">Expense</Label>
                 </div>
                 <div className="flex items-center gap-3">
-                  <RadioGroupItem value="comfortable" id="r2" />
-                  <Label htmlFor="r2">Income</Label>
+                  <RadioGroupItem value="INCOME" id="r2" />
+                  <Label htmlFor="Income">Income</Label>
                 </div>
                 <div className="flex items-center gap-3">
-                  <RadioGroupItem value="compact" id="r3" />
-                  <Label htmlFor="r3">Transfer</Label>
+                  <RadioGroupItem value="TRANSFER" id="r3" />
+                  <Label htmlFor="Transfer">Transfer</Label>
                 </div>
               </RadioGroup>
             </Field>
             <Field>
               <Label htmlFor="note">Note</Label>
               <Input
-                id="note"
-                name="note"
-                defaultValue=""
+                value={formData.note}
+                onChange={(e) => handleChange("note", e.target.value)}
                 placeholder="e.g., Groceries"
               />
             </Field>
@@ -80,21 +110,31 @@ export const CreateTransactionForm = () => {
                 id="amount"
                 name="amount"
                 type="number"
-                defaultValue=""
+                value={formData.amount}
+                onChange={(e) =>
+                  handleChange("amount", parseFloat(e.target.value) || 0)
+                }
                 placeholder="e.g., 9.00"
               />
             </Field>
             <Field>
               <Label htmlFor="date">Date</Label>
-              <DatePickerInput />
+              <DatePickerInput
+                value={formData.date}
+                onChange={(date) => {
+                  if (date) {
+                    handleChange("date", date);
+                  }
+                }}
+              />
             </Field>
             <Field>
               <Label htmlFor="category">Category</Label>
               <SelectComponent
                 label="Category"
                 items={categories.map((cat) => cat.name)}
-                value={selectedCategory}
-                onChange={setSelectedCategory}
+                value={formData.category}
+                onChange={(value) => handleChange("category", value)}
               />
             </Field>
             <Field>
@@ -102,7 +142,8 @@ export const CreateTransactionForm = () => {
               <Textarea
                 id="remarks"
                 name="remarks"
-                defaultValue=""
+                value={formData.remarks}
+                onChange={(e) => handleChange("remarks", e.target.value)}
                 placeholder="e.g., Purchased groceries"
               />
             </Field>
@@ -111,10 +152,12 @@ export const CreateTransactionForm = () => {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" className="bg-amber-500">Save changes</Button>
+            <Button type="submit" className="bg-amber-500">
+              Save changes
+            </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };

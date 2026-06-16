@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useEffect, useState } from "react";
 
 function formatDate(date: Date | undefined) {
   if (!date) {
@@ -34,13 +35,29 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
-export function DatePickerInput() {
+interface DatePickerInputProps {
+  value?: Date;
+  onChange: (date: Date | undefined) => void;
+}
+
+export function DatePickerInput({
+  value: selectedDate,
+  onChange,
+}: DatePickerInputProps) {
   const now: Date = new Date();
 
-  const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(new Date(now));
-  const [month, setMonth] = React.useState<Date | undefined>(date);
-  const [value, setValue] = React.useState(formatDate(date));
+  const date = selectedDate;
+  const [open, setOpen] = useState(false);
+  const [month, setMonth] = useState<Date | undefined>(date);
+  const [value, setValue] = useState(formatDate(date));
+
+  useEffect(() => {
+    setValue(formatDate(selectedDate));
+
+    if (selectedDate) {
+      setMonth(selectedDate);
+    }
+  }, [selectedDate]);
 
   return (
     <Field className="mx-auto w-48">
@@ -53,7 +70,7 @@ export function DatePickerInput() {
             const date = new Date(e.target.value);
             setValue(e.target.value);
             if (isValidDate(date)) {
-              setDate(date);
+              onChange(date);
               setMonth(date);
             }
           }}
@@ -89,7 +106,7 @@ export function DatePickerInput() {
                 month={month}
                 onMonthChange={setMonth}
                 onSelect={(date) => {
-                  setDate(date);
+                  onChange(date);
                   setValue(formatDate(date));
                   setOpen(false);
                 }}
