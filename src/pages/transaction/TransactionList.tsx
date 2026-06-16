@@ -62,29 +62,9 @@ export const TransactionListPage = () => {
           Clear Filter
         </Button>
         <div className="ml-auto">
-          <CreateTransactionForm id={1}/>
+          <CreateTransactionForm/>
         </div>
       </div>
-      {/* {categories && categories.length > 0 && (
-        <div className="flex justify-center flex-wrap gap-2 my-3">
-          {categories.map((category: Category, index: number) => {
-            const IconComponent = iconMap[category.icon];
-            return (
-              <Badge
-                key={index}
-                style={{
-                  backgroundColor: category.color,
-                }}
-                className="text-white flex items-center gap-1 h-7"
-              >
-                {IconComponent && <IconComponent className="w-4 h-4" />}
-
-                {category.name}
-              </Badge>
-            );
-          })}
-        </div>
-      )} */}
       {transactions && transactions.length > 0 ? (
         transactions.map((transaction: Transaction, index: number) => (
           <>

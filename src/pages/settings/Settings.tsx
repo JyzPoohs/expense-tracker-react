@@ -1,4 +1,4 @@
-import { Tab } from "@/components/layouts/Tab";
+import { Tab } from "@/components/layouts/SettingsTab";
 
 export const Settings = () => {
   return (
