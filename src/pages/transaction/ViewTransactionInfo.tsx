@@ -29,7 +29,7 @@ export const ViewTransactionInfo = ({ transaction }: ViewTransactionInfoProps) =
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="bg-amber-400">
           <Eye />
         </Button>
       </DialogTrigger>

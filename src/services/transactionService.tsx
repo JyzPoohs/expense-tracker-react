@@ -17,3 +17,8 @@ export const createTransaction = async (formData: any) => {
     const response = await api.post(TRANSACTIONS_BASE_URL, formData);
     return response.data;
 }
+
+export const deleteTransaction = async (id: number) => {
+    const response = await api.delete(TRANSACTIONS_BASE_URL + "/" + id);
+    return response.data;
+}

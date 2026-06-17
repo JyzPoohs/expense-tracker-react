@@ -1,23 +1,35 @@
 import { useEffect, useState } from "react";
-import { getAllTransactions } from "../../services/transactionService";
+import {
+  deleteTransaction,
+  getAllTransactions,
+} from "../../services/transactionService";
 import { getAllCategorires } from "../../services/categoryService";
-import { Badge } from "@/components/ui/badge";
-import { iconMap } from "@/utils/iconMapper";
 import type { Transaction } from "@/types/transaction";
 import type { Category } from "@/types/category";
 import { CreateTransactionForm } from "./CreateTransactionForm";
 import { SelectComponent } from "@/components/component/SelectComponent";
-import { transactionTypes } from "@/config/TransactionType";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Car } from "lucide-react";
+import { Car, Trash } from "lucide-react";
 import { ViewTransactionInfo } from "./ViewTransactionInfo";
+import { transactionTypes } from "@/config/transactionType";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
+
+  const handleDelete = async (id: number) => {
+    try {
+      confirm("Are you sure you want to delete this transaction?") && (await deleteTransaction(id));
+
+      const data = await getAllTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -62,7 +74,7 @@ export const TransactionListPage = () => {
           Clear Filter
         </Button>
         <div className="ml-auto">
-          <CreateTransactionForm/>
+          <CreateTransactionForm />
         </div>
       </div>
       {transactions && transactions.length > 0 ? (
@@ -77,11 +89,20 @@ export const TransactionListPage = () => {
               </span>
               <div>
                 <p>{transaction.note}</p>
-                <p className="text-sm text-muted-foreground">Remarks: {transaction.remarks}</p>
+                <p className="text-sm text-muted-foreground">
+                  Remarks: {transaction.remarks}
+                </p>
               </div>
 
               <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
               <ViewTransactionInfo transaction={transaction} />
+              <Button
+                type="button"
+                className="bg-red-500"
+                onClick={() => handleDelete(transaction.id)}
+              >
+                <Trash />
+              </Button>
             </div>
             <Separator className="bg-amber-100" />
           </>
