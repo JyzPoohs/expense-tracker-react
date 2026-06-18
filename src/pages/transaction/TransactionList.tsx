@@ -10,9 +10,10 @@ import { CreateTransactionForm } from "./CreateTransactionForm";
 import { SelectComponent } from "@/components/component/SelectComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Car, Trash } from "lucide-react";
+import { Car, Trash, Pencil } from "lucide-react";
 import { ViewTransactionInfo } from "./ViewTransactionInfo";
 import { transactionTypes } from "@/config/transactionType";
+import { toast } from "sonner";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -22,11 +23,13 @@ export const TransactionListPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      confirm("Are you sure you want to delete this transaction?") && (await deleteTransaction(id));
-
+      confirm("Are you sure you want to delete this transaction?") &&
+        (await deleteTransaction(id));
+      toast.success("Transaction deleted successfully");
       const data = await getAllTransactions();
       setTransactions(data);
     } catch (error) {
+      toast.error("Failed to delete transaction");
       console.error("Delete failed:", error);
     }
   };

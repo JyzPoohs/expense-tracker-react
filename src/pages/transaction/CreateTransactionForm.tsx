@@ -20,16 +20,10 @@ import type { Category } from "@/types/category";
 import { getAllCategorires } from "@/services/categoryService";
 import { SelectComponent } from "@/components/component/SelectComponent";
 import { createTransaction } from "@/services/transactionService";
+import { toast } from "sonner";
 
 export const CreateTransactionForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedType, setSelectedType] = useState("Expense");
-  const [note, setNote] = useState("");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [remarks, setRemarks] = useState("");
-
   const [formData, setFormData] = useState({
     note: "",
     amount: 0,
@@ -46,12 +40,16 @@ export const CreateTransactionForm = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      await createTransaction(formData);
 
-    await createTransaction(formData);
+      toast.success("Transaction created successfully");
+    } catch (error) {
+      toast.error("Failed to create transaction");
+    }
   };
 
   useEffect(() => {
