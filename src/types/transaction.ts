@@ -11,6 +11,15 @@ export interface Transaction {
   remarks: string;
 }
 
+export interface TransactionFormData {
+  note: string;
+  amount: number;
+  type: string;
+  category: string;
+  remarks: string;
+  date: Date;
+}
+
 export type TransactionType = {
   id: number;
   note: string;
@@ -22,28 +31,28 @@ export type TransactionType = {
 };
 
 export const columns: ColumnDef<TransactionType>[] = [
-    {
-        accessorKey: "note",
-        header: "Note",
-    },
-    {
-        accessorKey: "amount",
-        header: "Amount",
-    },
-    {
-        accessorKey: "date",
-        header: "Date",
-    },
-    {
-        accessorKey: "category",
-        header: "Category",
-    },
-    {
-        accessorKey: "type",
-        header: "Type",
-    },
-    {
-        accessorKey: "remarks",
-        header: "Remarks",
-    },
+  {
+    accessorKey: "note",
+    header: "Note",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
+    accessorKey: "remarks",
+    header: "Remarks",
+  },
 ];
