@@ -15,18 +15,19 @@ import type { Category } from "@/types/category";
 import { SelectComponent } from "@/components/common/SelectComponent";
 
 import type { TransactionFormData } from "@/types/transaction";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAllCategorires } from "@/services/categoryService";
+
 interface TransactionFormProps {
-  categories: Category[];
   initialData?: TransactionFormData;
   onSubmit: (data: TransactionFormData) => Promise<void>;
 }
 
 export const TransactionForm = ({
-  categories,
   initialData,
   onSubmit,
 }: TransactionFormProps) => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<TransactionFormData>(
     initialData ?? {
       note: "",
@@ -50,6 +51,16 @@ export const TransactionForm = ({
 
     await onSubmit(formData);
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await getAllCategorires();
+      setCategories(data);
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <form onSubmit={handleSubmit}>
       <FieldGroup>

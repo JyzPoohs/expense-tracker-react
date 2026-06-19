@@ -11,8 +11,6 @@ import {
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import type { Category } from "@/types/category";
-import { getTransactionById } from "@/services/transactionService";
 import type { Transaction } from "@/types/transaction";
 
 interface ViewTransactionInfoProps {
@@ -47,11 +45,8 @@ export const ViewTransactionInfo = ({ transaction }: ViewTransactionInfoProps) =
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Close</Button>
           </DialogClose>
-          <Button type="submit" className="bg-amber-500">
-            Save changes
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

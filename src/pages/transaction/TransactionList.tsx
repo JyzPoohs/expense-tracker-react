@@ -14,6 +14,7 @@ import { Car, Trash, Pencil } from "lucide-react";
 import { ViewTransactionInfo } from "../../components/transaction/ViewTransactionDialog";
 import { transactionTypes } from "@/config/transactionType";
 import { toast } from "sonner";
+import { EditTransactionDialog } from "@/components/transaction/EditTransactionDialog";
 
 export const TransactionListPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -99,6 +100,7 @@ export const TransactionListPage = () => {
 
               <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
               <ViewTransactionInfo transaction={transaction} />
+              <EditTransactionDialog transaction={transaction} />
               <Button
                 type="button"
                 className="bg-red-500"

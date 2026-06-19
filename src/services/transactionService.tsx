@@ -1,4 +1,4 @@
-import type { Transaction } from "@/types/transaction";
+import type { Transaction, TransactionFormData } from "@/types/transaction";
 import api from "../api/axios";
 
 const TRANSACTIONS_BASE_URL = "/transactions";
@@ -13,8 +13,13 @@ export const getTransactionById = async (id: number) => {
     return response.data;
 }
 
-export const createTransaction = async (formData: any) => {
-    const response = await api.post(TRANSACTIONS_BASE_URL, formData);
+export const createTransaction = async (transaction: TransactionFormData) => {
+    const response = await api.post(TRANSACTIONS_BASE_URL, transaction);
+    return response.data;
+}
+
+export const updateTransaction = async (id: number, transaction: TransactionFormData) => {
+    const response = await api.put(TRANSACTIONS_BASE_URL + "/" + id, transaction);
     return response.data;
 }
 
