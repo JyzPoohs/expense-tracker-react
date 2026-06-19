@@ -24,9 +24,11 @@ export const TransactionListPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      confirm("Are you sure you want to delete this transaction?") &&
-        (await deleteTransaction(id));
-      toast.success("Transaction deleted successfully");
+      if (confirm("Are you sure you want to delete this transaction?")) {
+        await deleteTransaction(id);
+        toast.success("Transaction deleted successfully");
+      }
+      
       const data = await getAllTransactions();
       setTransactions(data);
     } catch (error) {

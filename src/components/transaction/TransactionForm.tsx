@@ -142,7 +142,7 @@ export const TransactionForm = ({
           <Button variant="outline">Cancel</Button>
         </DialogClose>
         <Button type="submit" className="bg-amber-500">
-          Create
+          Submit
         </Button>
       </DialogFooter>
     </form>

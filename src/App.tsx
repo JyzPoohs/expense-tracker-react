@@ -15,7 +15,7 @@ function App() {
             <Header />
           </div>
           <div className="px-4 py-2">
-            <Toaster />
+            <Toaster richColors position="top-right"/>
             <AppRoutes />
           </div>
         </main>
