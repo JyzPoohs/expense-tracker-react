@@ -1,7 +1,7 @@
 import { Sun, Moon, Bell, CircleUserRound, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/auth/AuthProvider";
-import { SearchBar } from "../component/SearchBar";
+import { SearchBar } from "../common/SearchBar";
 
 export function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");

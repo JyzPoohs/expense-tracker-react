@@ -5,7 +5,7 @@ import { getAllTransactions } from "@/services/transactionService";
 import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCards } from "@/config/SummaryCardsConfig";
-import { CreateTransactionForm } from "./transaction/CreateTransactionForm";
+import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
 
 export const Dashboard = () => {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -23,7 +23,7 @@ export const Dashboard = () => {
     };
 
     fetchTransactions();
-  }, [ isAuthenticated, user]);
+  }, [isAuthenticated, user]);
 
   return (
     <div>

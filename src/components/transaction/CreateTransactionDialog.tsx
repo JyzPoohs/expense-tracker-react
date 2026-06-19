@@ -13,12 +13,12 @@ import { FieldGroup, Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { DatePickerInput } from "@/components/component/DatePicker";
+import { DatePickerInput } from "@/components/common/DatePicker";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import type { Category } from "@/types/category";
 import { getAllCategorires } from "@/services/categoryService";
-import { SelectComponent } from "@/components/component/SelectComponent";
+import { SelectComponent } from "@/components/common/SelectComponent";
 import { createTransaction } from "@/services/transactionService";
 import { toast } from "sonner";
 

@@ -6,12 +6,12 @@ import {
 import { getAllCategorires } from "../../services/categoryService";
 import type { Transaction } from "@/types/transaction";
 import type { Category } from "@/types/category";
-import { CreateTransactionForm } from "./CreateTransactionForm";
-import { SelectComponent } from "@/components/component/SelectComponent";
+import { CreateTransactionForm } from "../../components/transaction/CreateTransactionDialog";
+import { SelectComponent } from "@/components/common/SelectComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Car, Trash, Pencil } from "lucide-react";
-import { ViewTransactionInfo } from "./ViewTransactionInfo";
+import { ViewTransactionInfo } from "../../components/transaction/ViewTransactionDialog";
 import { transactionTypes } from "@/config/transactionType";
 import { toast } from "sonner";
 
