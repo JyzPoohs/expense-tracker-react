@@ -126,6 +126,36 @@ export const TransactionForm = ({
             onChange={(value) => handleChange("category", value)}
           />
         </Field>
+        <Label>Account</Label>
+        {formData.type === "TRANSFER" ? (
+          <div className="flex gap-2">
+            <Field>
+              <SelectComponent
+                label="From Account"
+                items={categories.map((cat) => cat.name)}
+                value={formData.category}
+                onChange={(value) => handleChange("category", value)}
+              />
+            </Field>
+            <Field>
+              <SelectComponent
+                label="To Account"
+                items={categories.map((cat) => cat.name)}
+                value={formData.category}
+                onChange={(value) => handleChange("category", value)}
+              />
+            </Field>
+          </div>
+        ) : (
+          <Field>
+            <SelectComponent
+              label="To Account"
+              items={categories.map((cat) => cat.name)}
+              value={formData.category}
+              onChange={(value) => handleChange("category", value)}
+            />
+          </Field>
+        )}
         <Field>
           <Label htmlFor="remarks">Remarks</Label>
           <Textarea
