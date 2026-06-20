@@ -1,31 +1,25 @@
-import type { SummaryCardProps } from "@/types/summaryCards";
-import {
-  Wallet,
-  TrendingUp,
-  TrendingDown,
-  ArrowLeftRight,
-} from "lucide-react";
+import type { SummaryCardConfigProps } from "@/types/summaryCards";
+import { Wallet, TrendingUp, TrendingDown, ArrowLeftRight } from "lucide-react";
 
-export const summaryCards: SummaryCardProps[] = [
+export const summaryCardConfig: SummaryCardConfigProps[] = [
   {
+    key: "totalBalance",
     title: "Total Balance",
-    value: "RM 12,450.00",
     icon: Wallet,
-    description: "+12% from last month",
   },
   {
+    key: "totalIncome",
     title: "Income",
-    value: "RM 15,000.00",
     icon: TrendingUp,
   },
   {
+    key: "totalExpense",
     title: "Expense",
-    value: "RM 2,500.00",
     icon: TrendingDown,
   },
   {
+    key: "numTransactions",
     title: "Transactions",
-    value: "120",
     icon: ArrowLeftRight,
   },
 ];

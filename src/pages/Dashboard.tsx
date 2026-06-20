@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { getAllTransactions } from "@/services/transactionService";
 import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
-import { summaryCards } from "@/config/SummaryCardsConfig";
+import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
+import { getDashboardSummary } from "@/services/summaryService";
+import type { DashboardSummary } from "@/types/dashboardSummary";
 
 export const Dashboard = () => {
-  const { user, isLoading, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [summary, setSummary] = useState<DashboardSummary | null>(null);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -18,11 +21,22 @@ export const Dashboard = () => {
 
         setTransactions(data);
       } catch (error) {
-        console.error(error);
+        console.error("Fetch dashboard transactions error: ", error);
+      }
+    };
+
+    const fetchDashboardSummary = async () => {
+      try {
+        const data = await getDashboardSummary();
+
+        setSummary(data);
+      } catch (error) {
+        console.error("Fetch dashboard summary error: ", error);
       }
     };
 
     fetchTransactions();
+    fetchDashboardSummary();
   }, [isAuthenticated, user]);
 
   return (
@@ -34,9 +48,24 @@ export const Dashboard = () => {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">
-        {summaryCards.map((card) => (
-          <SummaryCard key={card.title} {...card} />
-        ))}
+        {summary &&
+          summaryCardConfig.map((card) => (
+            <SummaryCard
+              key={card.key}
+              title={card.title}
+              icon={card.icon}
+              value={
+                card.key === "numTransactions"
+                  ? String(summary.numTransactions)
+                  : `RM ${summary[card.key as keyof DashboardSummary]}`
+              }
+              description={
+                card.key === "totalBalance"
+                  ? `${summary.percentage}% from last month`
+                  : undefined
+              }
+            />
+          ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         xxx

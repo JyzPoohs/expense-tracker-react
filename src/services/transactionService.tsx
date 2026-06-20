@@ -1,4 +1,4 @@
-import type { Transaction, TransactionFormData } from "@/types/transaction";
+import type { TransactionFormData } from "@/types/transaction";
 import api from "../api/axios";
 
 const TRANSACTIONS_BASE_URL = "/transactions";
