@@ -10,7 +10,7 @@ import { SettingItems } from "@/config/SettingItems";
 
 export function Tab() {
   return (
-    <Tabs defaultValue="overview" className="w-full">
+    <Tabs defaultValue="categorires" className="w-full">
       <TabsList>
         {SettingItems.map((setting) => (
           <TabsTrigger value={setting.item.toLowerCase().replace(" ", "-")}>

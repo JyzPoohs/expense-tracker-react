@@ -8,18 +8,18 @@ export const SettingItems = [
   },
   {
     "item": "Default Currency",
-    "component": <CategoriesSettings />
+    "component": <div>Default Currency</div>
   },
   {
     "item": "Recurring Transactions",
-    "component": <CategoriesSettings />
+    "component": <div>Recurring Transactions</div>
   },
   {
     "item": "Appearance",
-    "component": <CategoriesSettings />
+    "component": <div>Appearance</div>
   },
   {
     "item": "User Account",
-    "component": <CategoriesSettings />
+    "component": <div>User Account</div>
   }
 ];
