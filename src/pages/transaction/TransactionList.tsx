@@ -39,6 +39,26 @@ export const TransactionListPage = () => {
     };
   });
 
+  const groupedTransactions = transactions.reduce(
+    (groups, transaction) => {
+      const date = transaction.date;
+
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+
+      groups[date].push(transaction);
+
+      return groups;
+    },
+    {} as Record<string, Transaction[]>,
+  );
+
+  function formatDate(date: string): string {
+    const newDate = new Date(date);
+    return newDate.toISOString().split('T')[0];
+  }
+
   const handleDelete = async (id: number) => {
     try {
       if (confirm("Are you sure you want to delete this transaction?")) {
@@ -106,40 +126,39 @@ export const TransactionListPage = () => {
           <CreateTransactionForm />
         </div>
       </div>
-      {transactions && transactions.length > 0 ? (
-        transactions.map((transaction: Transaction, index: number) => (
-          <>
-            <div
-              key={transaction.id ?? index}
-              className="card mb-3 p-3 flex gap-4"
-            >
-              <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
-                <Car />
-              </span>
-              <div>
-                <p>{transaction.note}</p>
-                <p className="text-sm text-muted-foreground">
-                  Remarks: {transaction.remarks}
-                </p>
-              </div>
+      {Object.entries(groupedTransactions).map(([date, items]) => (
+        <div key={date} className="mt-2">
+          <h3>{formatDate(date)}</h3>
 
-              <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
-              <ViewTransactionInfo transaction={transaction} />
-              <EditTransactionDialog transaction={transaction} />
-              <Button
-                type="button"
-                className="bg-red-500"
-                onClick={() => handleDelete(transaction.id)}
-              >
-                <Trash />
-              </Button>
-            </div>
-            <Separator className="bg-amber-100" />
-          </>
-        ))
-      ) : (
-        <p>No transactions found.</p>
-      )}
+          {items.map((transaction) => (
+            <>
+              <div key={transaction.id} className="card mb-3 p-3 flex gap-4">
+                <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
+                  <Car />
+                </span>
+                <div>
+                  <p>{transaction.note}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Remarks: {transaction.remarks}
+                  </p>
+                </div>
+
+                <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
+                <ViewTransactionInfo transaction={transaction} />
+                <EditTransactionDialog transaction={transaction} />
+                <Button
+                  type="button"
+                  className="bg-red-500"
+                  onClick={() => handleDelete(transaction.id)}
+                >
+                  <Trash />
+                </Button>
+              </div>
+              <Separator />
+            </>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
