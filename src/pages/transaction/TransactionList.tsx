@@ -21,6 +21,23 @@ export const TransactionListPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+
+  const months = Array.from({ length: 12 }, (_, i) => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - i);
+
+    return {
+      value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0",
+      )}`,
+      label: date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      }),
+    };
+  });
 
   const handleDelete = async (id: number) => {
     try {
@@ -28,7 +45,7 @@ export const TransactionListPage = () => {
         await deleteTransaction(id);
         toast.success("Transaction deleted successfully");
       }
-      
+
       const data = await getAllTransactions();
       setTransactions(data);
     } catch (error) {
@@ -68,6 +85,12 @@ export const TransactionListPage = () => {
           items={categories.map((cat) => cat.name)}
           value={selectedCategory}
           onChange={setSelectedCategory}
+        />
+        <SelectComponent
+          label="Month"
+          items={months.map((month) => month.label)}
+          value={selectedMonth}
+          onChange={setSelectedMonth}
         />
         <Button className="bg-amber-500">Search</Button>
         <Button
