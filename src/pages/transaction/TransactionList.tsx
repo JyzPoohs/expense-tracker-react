@@ -10,7 +10,7 @@ import { CreateTransactionForm } from "../../components/transaction/CreateTransa
 import { SelectComponent } from "@/components/common/SelectComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Car, Trash, Pencil } from "lucide-react";
+import { Car, Trash } from "lucide-react";
 import { ViewTransactionInfo } from "../../components/transaction/ViewTransactionDialog";
 import { transactionTypes } from "@/config/transactionType";
 import { toast } from "sonner";
@@ -39,9 +39,13 @@ export const TransactionListPage = () => {
     };
   });
 
-  const groupedTransactions = transactions.reduce(
+  const sortedTransactions = [...transactions].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
+  const groupedTransactions = sortedTransactions.reduce(
     (groups, transaction) => {
-      const date = transaction.date;
+      const date = formatDate(transaction.date);
 
       if (!groups[date]) {
         groups[date] = [];
@@ -56,7 +60,7 @@ export const TransactionListPage = () => {
 
   function formatDate(date: string): string {
     const newDate = new Date(date);
-    return newDate.toISOString().split('T')[0];
+    return newDate.toISOString().split("T")[0];
   }
 
   const handleDelete = async (id: number) => {
