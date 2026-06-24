@@ -16,6 +16,8 @@ import { transactionTypes } from "@/config/transactionType";
 import { toast } from "sonner";
 import { EditTransactionDialog } from "@/components/transaction/EditTransactionDialog";
 import { monthOptions } from "@/config/MonthOptionsConfig";
+import { AlertDialog } from "@/components/common/AlertDialog";
+import { deleteAlertDialog } from "@/config/AlertDialogConfig";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -62,10 +64,8 @@ export const TransactionListPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      if (confirm("Are you sure you want to delete this transaction?")) {
-        await deleteTransaction(id);
-        toast.success("Transaction deleted successfully");
-      }
+      await deleteTransaction(id);
+      toast.success("Transaction deleted successfully");
 
       const data = await getAllTransactions();
       setTransactions(data);
@@ -161,13 +161,15 @@ export const TransactionListPage = () => {
                 <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
                 <ViewTransactionInfo transaction={transaction} />
                 <EditTransactionDialog transaction={transaction} />
-                <Button
-                  type="button"
-                  className="bg-red-500"
-                  onClick={() => handleDelete(transaction.id)}
-                >
-                  <Trash />
-                </Button>
+                <AlertDialog
+                  title={deleteAlertDialog.title}
+                  message={deleteAlertDialog.message}
+                  confirmText={deleteAlertDialog.confirmText}
+                  cancelText={deleteAlertDialog.cancelText}
+                  icon={Trash}
+                  triggerClassName="bg-red-500"
+                  onConfirm={() => handleDelete(transaction.id)}
+                />
               </div>
               <Separator />
             </>
