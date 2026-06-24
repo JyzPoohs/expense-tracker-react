@@ -15,29 +15,26 @@ import { ViewTransactionInfo } from "../../components/transaction/ViewTransactio
 import { transactionTypes } from "@/config/transactionType";
 import { toast } from "sonner";
 import { EditTransactionDialog } from "@/components/transaction/EditTransactionDialog";
+import { monthOptions } from "@/config/MonthOptionsConfig";
 
 export const TransactionListPage = () => {
+  const now = new Date();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
 
-  const months = Array.from({ length: 12 }, (_, i) => {
-    const date = new Date();
-    date.setMonth(date.getMonth() - i);
+  const [selectedMonth, setSelectedMonth] = useState(
+    String(now.getMonth() + 1),
+  );
 
-    return {
-      value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-        2,
-        "0",
-      )}`,
-      label: date.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      }),
-    };
-  });
+  const [selectedYear, setSelectedYear] = useState(String(now.getFullYear()));
+  const currentYear = new Date().getFullYear();
+
+  const yearOptions = Array.from({ length: 10 }, (_, index) => ({
+    value: String(currentYear - index),
+    label: String(currentYear - index),
+  }));
 
   const sortedTransactions = [...transactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -112,9 +109,21 @@ export const TransactionListPage = () => {
         />
         <SelectComponent
           label="Month"
-          items={months.map((month) => month.label)}
-          value={selectedMonth}
-          onChange={setSelectedMonth}
+          items={monthOptions.map((month) => month.label)}
+          value={
+            monthOptions.find((m) => m.value === selectedMonth)?.label ?? ""
+          }
+          onChange={(label) => {
+            const month = monthOptions.find((m) => m.label === label);
+            setSelectedMonth(month?.value ?? "");
+          }}
+        />
+
+        <SelectComponent
+          label="Year"
+          items={yearOptions.map((year) => year.label)}
+          value={selectedYear}
+          onChange={setSelectedYear}
         />
         <Button className="bg-amber-500">Search</Button>
         <Button
@@ -122,6 +131,8 @@ export const TransactionListPage = () => {
           onClick={() => {
             setSelectedType("");
             setSelectedCategory("");
+            setSelectedMonth(String(now.getMonth() + 1));
+            setSelectedYear(String(now.getFullYear()));
           }}
         >
           Clear Filter
