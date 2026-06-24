@@ -2,6 +2,8 @@ import { Sun, Moon, Bell, CircleUserRound, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/auth/AuthProvider";
 import { SearchBar } from "../common/SearchBar";
+import { AlertDialog } from "../common/AlertDialog";
+import { logoutDialog } from "@/config/AlertDialogConfig";
 
 export function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -20,7 +22,7 @@ export function Header() {
             {theme === "dark" ? <Moon /> : <Sun />}
           </button>
           <Bell className="cursor-pointer" />
-          <LogOut className="cursor-pointer" onClick={logout} />
+          <AlertDialog {...logoutDialog} icon={LogOut} triggerClassName="bg-transparent hover:bg-transparent cursor-pointer" onConfirm={logout}/>
           <span>|</span>
           <div className="flex items-center gap-2">
             <CircleUserRound />

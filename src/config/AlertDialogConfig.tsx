@@ -5,3 +5,10 @@ export const deleteAlertDialog = {
   confirmText: "Delete",
   cancelText: "Cancel",
 };
+
+export const logoutDialog = {
+  title: "Logout",
+  message: "Are you sure you want to logout?",
+  confirmText: "Logout",
+  cancelText: "Cancel",
+};
