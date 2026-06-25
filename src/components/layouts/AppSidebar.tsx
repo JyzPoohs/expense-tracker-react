@@ -16,9 +16,11 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
 
 import { menuItems } from "@/config/SidebarConfig";
+import { logoutDialog } from "@/config/AlertDialogConfig";
+import { AlertDialog } from "../common/AlertDialog";
 
 export function AppSidebar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const accessibleMenuItems = menuItems.filter((item) =>
     item.accessRoles.some((role) => user?.roles.includes(role.toUpperCase())),
@@ -59,9 +61,13 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <LogOut /> Logout
-            </SidebarMenuButton>
+            <AlertDialog
+              {...logoutDialog}
+              icon={LogOut}
+              triggerClassName="bg-transparent hover:bg-transparent cursor-pointer"
+              onConfirm={logout}
+            />
+            <SidebarMenuButton></SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

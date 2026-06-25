@@ -18,6 +18,7 @@ import { EditTransactionDialog } from "@/components/transaction/EditTransactionD
 import { monthOptions } from "@/config/MonthOptionsConfig";
 import { AlertDialog } from "@/components/common/AlertDialog";
 import { deleteAlertDialog } from "@/config/AlertDialogConfig";
+import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -56,6 +57,28 @@ export const TransactionListPage = () => {
     },
     {} as Record<string, Transaction[]>,
   );
+
+  const categoryGroups = Object.entries(
+    categories.reduce(
+      (groups, category) => {
+        const type = category.type.toUpperCase();
+        if (!groups[type]) {
+          groups[type] = [];
+        }
+
+        groups[type].push({
+          value: category.name,
+          label: category.name,
+        });
+
+        return groups;
+      },
+      {} as Record<string, { value: string; label: string }[]>,
+    ),
+  ).map(([label, items]) => ({
+    label,
+    items,
+  }));
 
   function formatDate(date: string): string {
     const newDate = new Date(date);
@@ -101,11 +124,11 @@ export const TransactionListPage = () => {
           value={selectedType}
           onChange={setSelectedType}
         />
-        <SelectComponent
-          label="Category"
-          items={categories.map((cat) => cat.name)}
+        <SelectGroupComponent
+          groups={categoryGroups}
           value={selectedCategory}
           onChange={setSelectedCategory}
+          placeholder="Category"
         />
         <SelectComponent
           label="Month"
@@ -144,7 +167,6 @@ export const TransactionListPage = () => {
       {Object.entries(groupedTransactions).map(([date, items]) => (
         <div key={date} className="mt-2">
           <h3>{formatDate(date)}</h3>
-
           {items.map((transaction) => (
             <>
               <div key={transaction.id} className="card mb-3 p-3 flex gap-4">

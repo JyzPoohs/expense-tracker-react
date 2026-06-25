@@ -7,13 +7,7 @@ import {
   SelectValue,
   SelectLabel,
 } from "@/components/ui/select";
-
-interface SelectComponentProps {
-  label?: string;
-  items: string[];
-  value?: string;
-  onChange?: (value: string) => void;
-}
+import type { SelectComponentProps } from "@/config/SelectComponentConfig";
 
 export function SelectComponent({
   items,
@@ -24,7 +18,7 @@ export function SelectComponent({
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full max-w-90">
-        <SelectValue placeholder={`${"Select " + label}`} />
+        <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
