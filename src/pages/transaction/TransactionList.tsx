@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   deleteTransaction,
   getAllTransactions,
+  getFilteredTransactions,
 } from "../../services/transactionService";
 import { getAllCategorires } from "../../services/categoryService";
 import type { Transaction } from "@/types/transaction";
@@ -26,7 +27,6 @@ export const TransactionListPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
-
   const [selectedMonth, setSelectedMonth] = useState(
     String(now.getMonth() + 1),
   );
@@ -84,6 +84,17 @@ export const TransactionListPage = () => {
     const newDate = new Date(date);
     return newDate.toISOString().split("T")[0];
   }
+
+  const handleSearch = async () => {
+    const data = await getFilteredTransactions({
+      type: selectedType,
+      category: selectedCategory,
+      month: Number.parseInt(selectedMonth),
+      year: Number.parseInt(selectedYear),
+    });
+    console.log(data)
+    setTransactions(data);
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -148,7 +159,9 @@ export const TransactionListPage = () => {
           value={selectedYear}
           onChange={setSelectedYear}
         />
-        <Button className="bg-amber-500">Search</Button>
+        <Button className="bg-amber-500" onClick={handleSearch}>
+          Search
+        </Button>
         <Button
           className="bg-amber-700"
           onClick={() => {
