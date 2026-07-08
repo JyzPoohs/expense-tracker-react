@@ -1,6 +1,11 @@
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
 export interface SelectComponentProps {
   label?: string;
-  items: string[];
+  items: SelectOption[];
   value?: string;
   onChange?: (value: string) => void;
 }

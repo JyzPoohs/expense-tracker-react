@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Car, Trash } from "lucide-react";
 import { ViewTransactionInfo } from "../../components/transaction/ViewTransactionDialog";
-import { transactionTypes } from "@/config/transactionType";
+import { transactionTypes } from "@/config/TransactionType";
 import { toast } from "sonner";
 import { EditTransactionDialog } from "@/components/transaction/EditTransactionDialog";
 import { monthOptions } from "@/config/MonthOptionsConfig";
@@ -86,13 +86,19 @@ export const TransactionListPage = () => {
   }
 
   const handleSearch = async () => {
+    console.log("Searching with filters:", {
+      type: selectedType,
+      category: selectedCategory,
+      month: selectedMonth,
+      year: selectedYear,
+    });
     const data = await getFilteredTransactions({
       type: selectedType,
       category: selectedCategory,
       month: Number.parseInt(selectedMonth),
       year: Number.parseInt(selectedYear),
     });
-    console.log(data)
+    console.log(data);
     setTransactions(data);
   };
 
@@ -143,19 +149,13 @@ export const TransactionListPage = () => {
         />
         <SelectComponent
           label="Month"
-          items={monthOptions.map((month) => month.label)}
-          value={
-            monthOptions.find((m) => m.value === selectedMonth)?.label ?? ""
-          }
-          onChange={(label) => {
-            const month = monthOptions.find((m) => m.label === label);
-            setSelectedMonth(month?.value ?? "");
-          }}
+          items={monthOptions}
+          value={selectedMonth}
+          onChange={setSelectedMonth}
         />
-
         <SelectComponent
           label="Year"
-          items={yearOptions.map((year) => year.label)}
+          items={yearOptions}
           value={selectedYear}
           onChange={setSelectedYear}
         />

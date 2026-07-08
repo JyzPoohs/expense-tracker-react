@@ -24,8 +24,8 @@ export function SelectComponent({
         <SelectGroup>
           <SelectLabel>{label}</SelectLabel>
           {items.map((item) => (
-            <SelectItem key={item} value={item}>
-              {item}
+            <SelectItem key={item.label} value={item.value}>
+              {item.label}
             </SelectItem>
           ))}
         </SelectGroup>
