@@ -20,6 +20,7 @@ import { monthOptions } from "@/config/MonthOptionsConfig";
 import { AlertDialog } from "@/components/common/AlertDialog";
 import { deleteAlertDialog } from "@/config/AlertDialogConfig";
 import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
+import { TransactionCard } from "@/components/transaction/TransactionCard";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -177,33 +178,10 @@ export const TransactionListPage = () => {
           <div key={date} className="mt-2">
             <h3>{formatDate(date)}</h3>
             {items.map((transaction) => (
-              <div key={transaction.id}>
-                <div className="card mb-3 p-3 flex gap-4">
-                  <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
-                    <Car />
-                  </span>
-                  <div>
-                    <p>{transaction.note}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Remarks: {transaction.remarks}
-                    </p>
-                  </div>
-
-                  <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
-                  <ViewTransactionInfo transaction={transaction} />
-                  <EditTransactionDialog transaction={transaction} />
-                  <AlertDialog
-                    title={deleteAlertDialog.title}
-                    message={deleteAlertDialog.message}
-                    confirmText={deleteAlertDialog.confirmText}
-                    cancelText={deleteAlertDialog.cancelText}
-                    icon={Trash}
-                    triggerClassName="bg-red-500"
-                    onConfirm={() => handleDelete(transaction.id)}
-                  />
-                </div>
-                <Separator />
-              </div>
+              <TransactionCard
+                key={transaction.id}
+                transaction={transaction}
+                handleDelete={handleDelete}/>
             ))}
           </div>
         ))
