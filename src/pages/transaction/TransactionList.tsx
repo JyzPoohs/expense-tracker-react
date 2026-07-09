@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   deleteTransaction,
   getAllTransactions,
@@ -39,24 +39,26 @@ export const TransactionListPage = () => {
     label: String(currentYear - index),
   }));
 
-  const sortedTransactions = [...transactions].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  const groupedTransactions = useMemo(() => {
+    const sorted = [...transactions].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
 
-  const groupedTransactions = sortedTransactions.reduce(
-    (groups, transaction) => {
-      const date = formatDate(transaction.date);
+    return sorted.reduce(
+      (groups, transaction) => {
+        const date = formatDate(transaction.date);
 
-      if (!groups[date]) {
-        groups[date] = [];
-      }
+        if (!groups[date]) {
+          groups[date] = [];
+        }
 
-      groups[date].push(transaction);
+        groups[date].push(transaction);
 
-      return groups;
-    },
-    {} as Record<string, Transaction[]>,
-  );
+        return groups;
+      },
+      {} as Record<string, Transaction[]>,
+    );
+  }, [transactions]);
 
   const categoryGroups = Object.entries(
     categories.reduce(
@@ -86,20 +88,7 @@ export const TransactionListPage = () => {
   }
 
   const handleSearch = async () => {
-    console.log("Searching with filters:", {
-      type: selectedType,
-      category: selectedCategory,
-      month: selectedMonth,
-      year: selectedYear,
-    });
-    const data = await getFilteredTransactions({
-      type: selectedType,
-      category: selectedCategory,
-      month: Number.parseInt(selectedMonth),
-      year: Number.parseInt(selectedYear),
-    });
-    console.log(data);
-    setTransactions(data);
+    await loadTransactions();
   };
 
   const handleDelete = async (id: number) => {
@@ -115,19 +104,24 @@ export const TransactionListPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      const data = await getAllTransactions();
-      setTransactions(data);
-    };
+  const loadTransactions = async () => {
+    const data = await getFilteredTransactions({
+      type: selectedType,
+      category: selectedCategory,
+      month: Number.parseInt(selectedMonth),
+      year: Number.parseInt(selectedYear),
+    });
+    setTransactions(data);
+  };
 
+  useEffect(() => {
     const fetchCategories = async () => {
       const data = await getAllCategorires();
       setCategories(data);
     };
 
     fetchCategories();
-    fetchTransactions();
+    loadTransactions();
   }, []);
 
   return (
@@ -169,6 +163,7 @@ export const TransactionListPage = () => {
             setSelectedCategory("");
             setSelectedMonth(String(now.getMonth() + 1));
             setSelectedYear(String(now.getFullYear()));
+            handleSearch();
           }}
         >
           Clear Filter
@@ -177,40 +172,46 @@ export const TransactionListPage = () => {
           <CreateTransactionForm />
         </div>
       </div>
-      {Object.entries(groupedTransactions).map(([date, items]) => (
-        <div key={date} className="mt-2">
-          <h3>{formatDate(date)}</h3>
-          {items.map((transaction) => (
-            <>
-              <div key={transaction.id} className="card mb-3 p-3 flex gap-4">
-                <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
-                  <Car />
-                </span>
-                <div>
-                  <p>{transaction.note}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Remarks: {transaction.remarks}
-                  </p>
-                </div>
+      {Object.entries(groupedTransactions).length > 0 ? (
+        Object.entries(groupedTransactions).map(([date, items]) => (
+          <div key={date} className="mt-2">
+            <h3>{formatDate(date)}</h3>
+            {items.map((transaction) => (
+              <div key={transaction.id}>
+                <div className="card mb-3 p-3 flex gap-4">
+                  <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
+                    <Car />
+                  </span>
+                  <div>
+                    <p>{transaction.note}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Remarks: {transaction.remarks}
+                    </p>
+                  </div>
 
-                <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
-                <ViewTransactionInfo transaction={transaction} />
-                <EditTransactionDialog transaction={transaction} />
-                <AlertDialog
-                  title={deleteAlertDialog.title}
-                  message={deleteAlertDialog.message}
-                  confirmText={deleteAlertDialog.confirmText}
-                  cancelText={deleteAlertDialog.cancelText}
-                  icon={Trash}
-                  triggerClassName="bg-red-500"
-                  onConfirm={() => handleDelete(transaction.id)}
-                />
+                  <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
+                  <ViewTransactionInfo transaction={transaction} />
+                  <EditTransactionDialog transaction={transaction} />
+                  <AlertDialog
+                    title={deleteAlertDialog.title}
+                    message={deleteAlertDialog.message}
+                    confirmText={deleteAlertDialog.confirmText}
+                    cancelText={deleteAlertDialog.cancelText}
+                    icon={Trash}
+                    triggerClassName="bg-red-500"
+                    onConfirm={() => handleDelete(transaction.id)}
+                  />
+                </div>
+                <Separator />
               </div>
-              <Separator />
-            </>
-          ))}
+            ))}
+          </div>
+        ))
+      ) : (
+        <div className="text-center mt-5 text-lg text-muted-foreground">
+          No transactions found
         </div>
-      ))}
+      )}
     </div>
   );
 };
