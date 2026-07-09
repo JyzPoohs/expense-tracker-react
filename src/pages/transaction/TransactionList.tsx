@@ -11,33 +11,27 @@ import { CreateTransactionForm } from "../../components/transaction/CreateTransa
 import { SelectComponent } from "@/components/common/SelectComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Car, Trash } from "lucide-react";
-import { ViewTransactionInfo } from "../../components/transaction/ViewTransactionDialog";
 import { transactionTypes } from "@/config/TransactionType";
 import { toast } from "sonner";
-import { EditTransactionDialog } from "@/components/transaction/EditTransactionDialog";
 import { monthOptions } from "@/config/MonthOptionsConfig";
-import { AlertDialog } from "@/components/common/AlertDialog";
-import { deleteAlertDialog } from "@/config/AlertDialogConfig";
 import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
 import { TransactionCard } from "@/components/transaction/TransactionCard";
 
 export const TransactionListPage = () => {
   const now = new Date();
+  
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState(
-    String(now.getMonth() + 1),
-  );
-
-  const [selectedYear, setSelectedYear] = useState(String(now.getFullYear()));
-  const currentYear = new Date().getFullYear();
+  const [filters, setFilters] = useState({
+    type: "",
+    category: "",
+    month: String(now.getMonth() + 1),
+    year: String(now.getFullYear()),
+  });
 
   const yearOptions = Array.from({ length: 10 }, (_, index) => ({
-    value: String(currentYear - index),
-    label: String(currentYear - index),
+    value: String(now.getFullYear() - index),
+    label: String(now.getFullYear() - index),
   }));
 
   const groupedTransactions = useMemo(() => {
@@ -107,10 +101,9 @@ export const TransactionListPage = () => {
 
   const loadTransactions = async () => {
     const data = await getFilteredTransactions({
-      type: selectedType,
-      category: selectedCategory,
-      month: Number.parseInt(selectedMonth),
-      year: Number.parseInt(selectedYear),
+      ...filters,
+      month: filters.month ? Number(filters.month) : now.getMonth() + 1,
+      year: filters.year ? Number(filters.year) : now.getFullYear(),
     });
     setTransactions(data);
   };
@@ -123,7 +116,7 @@ export const TransactionListPage = () => {
 
     fetchCategories();
     loadTransactions();
-  }, []);
+  }, [filters]);
 
   return (
     <div className="p-3">
@@ -133,37 +126,44 @@ export const TransactionListPage = () => {
         <SelectComponent
           label="Type"
           items={transactionTypes}
-          value={selectedType}
-          onChange={setSelectedType}
+          value={filters.type}
+          onChange={(value) => {
+            setFilters((prev) => ({ ...prev, type: value }));
+          }}
         />
         <SelectGroupComponent
           groups={categoryGroups}
-          value={selectedCategory}
-          onChange={setSelectedCategory}
+          value={filters.category}
+          onChange={(value) => {
+            setFilters((prev) => ({ ...prev, category: value }));
+          }}
           placeholder="Category"
         />
         <SelectComponent
           label="Month"
           items={monthOptions}
-          value={selectedMonth}
-          onChange={setSelectedMonth}
+          value={filters.month}
+          onChange={(value) => {
+            setFilters((prev) => ({ ...prev, month: value }));
+          }}
         />
         <SelectComponent
           label="Year"
           items={yearOptions}
-          value={selectedYear}
-          onChange={setSelectedYear}
+          value={filters.year}
+          onChange={(value) => {
+            setFilters((prev) => ({ ...prev, year: value }));
+          }}
         />
-        <Button className="bg-amber-500" onClick={handleSearch}>
-          Search
-        </Button>
         <Button
           className="bg-amber-700"
           onClick={() => {
-            setSelectedType("");
-            setSelectedCategory("");
-            setSelectedMonth(String(now.getMonth() + 1));
-            setSelectedYear(String(now.getFullYear()));
+            setFilters({
+              type: "",
+              category: "",
+              month: String(now.getMonth() + 1),
+              year: String(now.getFullYear()),
+            });
             handleSearch();
           }}
         >
@@ -181,8 +181,10 @@ export const TransactionListPage = () => {
               <TransactionCard
                 key={transaction.id}
                 transaction={transaction}
-                handleDelete={handleDelete}/>
+                handleDelete={handleDelete}
+              />
             ))}
+            <Separator />
           </div>
         ))
       ) : (
