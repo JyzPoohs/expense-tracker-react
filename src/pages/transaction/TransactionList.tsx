@@ -16,10 +16,11 @@ import { toast } from "sonner";
 import { monthOptions } from "@/config/MonthOptionsConfig";
 import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
 import { TransactionCard } from "@/components/transaction/TransactionCard";
+import { TransactionFilters } from "@/components/transaction/TransactionFilters";
 
 export const TransactionListPage = () => {
   const now = new Date();
-  
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filters, setFilters] = useState({
@@ -86,6 +87,16 @@ export const TransactionListPage = () => {
     await loadTransactions();
   };
 
+  const handleReset = () => {
+    setFilters({
+      type: "",
+      category: "",
+      month: String(now.getMonth() + 1),
+      year: String(now.getFullYear()),
+    });
+    handleSearch();
+  };
+
   const handleDelete = async (id: number) => {
     try {
       await deleteTransaction(id);
@@ -123,52 +134,13 @@ export const TransactionListPage = () => {
       <h1 className="text-center my-3">Transaction List</h1>
       <div className="flex gap-2">
         <p className="my-auto">Filter: </p>
-        <SelectComponent
-          label="Type"
-          items={transactionTypes}
-          value={filters.type}
-          onChange={(value) => {
-            setFilters((prev) => ({ ...prev, type: value }));
-          }}
+        <TransactionFilters
+          filters={filters}
+          setFilters={setFilters}
+          categories={categories}
+          handleSearch={handleSearch}
+          handleReset={handleReset}
         />
-        <SelectGroupComponent
-          groups={categoryGroups}
-          value={filters.category}
-          onChange={(value) => {
-            setFilters((prev) => ({ ...prev, category: value }));
-          }}
-          placeholder="Category"
-        />
-        <SelectComponent
-          label="Month"
-          items={monthOptions}
-          value={filters.month}
-          onChange={(value) => {
-            setFilters((prev) => ({ ...prev, month: value }));
-          }}
-        />
-        <SelectComponent
-          label="Year"
-          items={yearOptions}
-          value={filters.year}
-          onChange={(value) => {
-            setFilters((prev) => ({ ...prev, year: value }));
-          }}
-        />
-        <Button
-          className="bg-amber-700"
-          onClick={() => {
-            setFilters({
-              type: "",
-              category: "",
-              month: String(now.getMonth() + 1),
-              year: String(now.getFullYear()),
-            });
-            handleSearch();
-          }}
-        >
-          Clear Filter
-        </Button>
         <div className="ml-auto">
           <CreateTransactionForm />
         </div>
