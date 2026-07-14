@@ -8,15 +8,11 @@ import { getAllCategorires } from "../../services/categoryService";
 import type { Transaction } from "@/types/transaction";
 import type { Category } from "@/types/category";
 import { CreateTransactionForm } from "../../components/transaction/CreateTransactionDialog";
-import { SelectComponent } from "@/components/common/SelectComponent";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { transactionTypes } from "@/config/TransactionType";
 import { toast } from "sonner";
-import { monthOptions } from "@/config/MonthOptionsConfig";
-import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
 import { TransactionCard } from "@/components/transaction/TransactionCard";
 import { TransactionFilters } from "@/components/transaction/TransactionFilters";
+import { formatDate} from "@/utils/date";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -29,11 +25,6 @@ export const TransactionListPage = () => {
     month: String(now.getMonth() + 1),
     year: String(now.getFullYear()),
   });
-
-  const yearOptions = Array.from({ length: 10 }, (_, index) => ({
-    value: String(now.getFullYear() - index),
-    label: String(now.getFullYear() - index),
-  }));
 
   const groupedTransactions = useMemo(() => {
     const sorted = [...transactions].sort(
@@ -55,33 +46,6 @@ export const TransactionListPage = () => {
       {} as Record<string, Transaction[]>,
     );
   }, [transactions]);
-
-  const categoryGroups = Object.entries(
-    categories.reduce(
-      (groups, category) => {
-        const type = category.type.toUpperCase();
-        if (!groups[type]) {
-          groups[type] = [];
-        }
-
-        groups[type].push({
-          value: category.name,
-          label: category.name,
-        });
-
-        return groups;
-      },
-      {} as Record<string, { value: string; label: string }[]>,
-    ),
-  ).map(([label, items]) => ({
-    label,
-    items,
-  }));
-
-  function formatDate(date: string): string {
-    const newDate = new Date(date);
-    return newDate.toISOString().split("T")[0];
-  }
 
   const handleSearch = async () => {
     await loadTransactions();

@@ -1,11 +1,9 @@
-import { CreateTransactionForm } from "../../components/transaction/CreateTransactionDialog";
 import { SelectComponent } from "@/components/common/SelectComponent";
 import { Button } from "@/components/ui/button";
 import { transactionTypes } from "@/config/TransactionType";
 import { monthOptions } from "@/config/MonthOptionsConfig";
 import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
 import type { Category } from "@/types/category";
-import { useState } from "react";
 
 interface TransactionFiltersProps {
   filters: {
