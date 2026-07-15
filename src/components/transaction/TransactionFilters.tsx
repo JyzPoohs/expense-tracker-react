@@ -3,33 +3,13 @@ import { Button } from "@/components/ui/button";
 import { transactionTypes } from "@/config/TransactionType";
 import { monthOptions } from "@/config/MonthOptionsConfig";
 import { SelectGroupComponent } from "@/components/common/SelectGroupComponent";
-import type { Category } from "@/types/category";
 
-interface TransactionFiltersProps {
-  filters: {
-    type: string;
-    category: string;
-    month: string;
-    year: string;
-  };
-  setFilters: React.Dispatch<
-    React.SetStateAction<{
-      type: string;
-      category: string;
-      month: string;
-      year: string;
-    }>
-  >;
-  categories: Category[];
-  handleSearch: () => void;
-  handleReset: () => void;
-}
+import type { TransactionFiltersProps } from "@/types/transactionFilters";
 
 export const TransactionFilters = ({
   filters,
   setFilters,
   categories,
-  handleSearch,
   handleReset,
 }: TransactionFiltersProps) => {
   const now = new Date();
@@ -81,17 +61,17 @@ export const TransactionFilters = ({
       <SelectComponent
         label="Month"
         items={monthOptions}
-        value={filters.month}
+        value={String(filters.month)}
         onChange={(value) => {
-          setFilters((prev) => ({ ...prev, month: value }));
+          setFilters((prev) => ({ ...prev, month: Number(value) }));
         }}
       />
       <SelectComponent
         label="Year"
         items={yearOptions}
-        value={filters.year}
+        value={String(filters.year)}
         onChange={(value) => {
-          setFilters((prev) => ({ ...prev, year: value }));
+          setFilters((prev) => ({ ...prev, year: Number(value) }));
         }}
       />
       <Button className="bg-amber-700" onClick={handleReset}>

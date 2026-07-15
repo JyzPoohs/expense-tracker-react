@@ -121,7 +121,10 @@ export const TransactionForm = ({
           <Label htmlFor="category">Category</Label>
           <SelectComponent
             label="Category"
-            items={categories.map((cat) => cat.name)}
+            items={categories.map((cat) => ({
+              label: cat.name,
+              value: cat.name,
+            }))}
             value={formData.category}
             onChange={(value) => handleChange("category", value)}
           />
@@ -132,7 +135,10 @@ export const TransactionForm = ({
             <Field>
               <SelectComponent
                 label="From Account"
-                items={categories.map((cat) => cat.name)}
+                items={categories.map((cat) => ({
+                  label: cat.name,
+                  value: cat.name,
+                }))}
                 value={formData.category}
                 onChange={(value) => handleChange("category", value)}
               />
@@ -140,7 +146,10 @@ export const TransactionForm = ({
             <Field>
               <SelectComponent
                 label="To Account"
-                items={categories.map((cat) => cat.name)}
+                items={categories.map((cat) => ({
+                  label: cat.name,
+                  value: cat.name,
+                }))}
                 value={formData.category}
                 onChange={(value) => handleChange("category", value)}
               />
@@ -150,7 +159,10 @@ export const TransactionForm = ({
           <Field>
             <SelectComponent
               label="To Account"
-              items={categories.map((cat) => cat.name)}
+              items={categories.map((cat) => ({
+                label: cat.name,
+                value: cat.name,
+              }))}
               value={formData.category}
               onChange={(value) => handleChange("category", value)}
             />
