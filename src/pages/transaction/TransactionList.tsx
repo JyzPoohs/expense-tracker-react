@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getAllCategorires } from "../../services/categoryService";
 import type { Transaction } from "@/types/transaction";
-import type { Category } from "@/types/category";
 import { CreateTransactionForm } from "../../components/transaction/CreateTransactionDialog";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
@@ -9,6 +8,7 @@ import { TransactionCard } from "@/components/transaction/TransactionCard";
 import { TransactionFilters } from "@/components/transaction/TransactionFilters";
 import { formatDate } from "@/utils/date";
 import { useTransactions } from "@/hooks/useTransactions";
+import { useCategories } from "@/hooks/useCategories";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -19,10 +19,10 @@ export const TransactionListPage = () => {
     year: now.getFullYear(),
   });
 
-  const { transactions, loading, refresh, removeTransaction } =
+  const { transactions, loading, loadTransactions, removeTransaction } =
     useTransactions(filters);
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useCategories();
 
   const groupedTransactions = useMemo(() => {
     const sorted = [...transactions].sort(
@@ -52,7 +52,7 @@ export const TransactionListPage = () => {
       month: now.getMonth() + 1,
       year: now.getFullYear(),
     });
-    refresh();
+    loadTransactions();
   };
 
   const handleDelete = async (id: number) => {
@@ -65,14 +65,9 @@ export const TransactionListPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getAllCategorires();
-      setCategories(data);
-    };
-
-    fetchCategories();
-  }, [filters]);
+  // useEffect(() => {
+  //   fetchCategories();
+  // }, [filters]);
 
   return (
     <div className="p-3">

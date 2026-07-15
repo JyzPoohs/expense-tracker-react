@@ -34,7 +34,7 @@ export function useTransactions(filters: TransactionFilter) {
   return {
     transactions,
     loading,
-    refresh: loadTransactions,
+    loadTransactions,
     removeTransaction,
   };
 }
