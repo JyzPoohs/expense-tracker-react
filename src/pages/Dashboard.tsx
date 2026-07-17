@@ -6,14 +6,13 @@ import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
-import { getDashboardSummary } from "@/services/summaryService";
 import type { DashboardSummary } from "@/types/dashboardSummary";
+import { useDashboard } from "@/hooks/useDashboard";
 
 export const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
-  const [summary, setSummary] = useState<DashboardSummary | null>(null);
-
+  const { summary } = useDashboard();
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -25,18 +24,8 @@ export const Dashboard = () => {
       }
     };
 
-    const fetchDashboardSummary = async () => {
-      try {
-        const data = await getDashboardSummary();
-
-        setSummary(data);
-      } catch (error) {
-        console.error("Fetch dashboard summary error: ", error);
-      }
-    };
 
     fetchTransactions();
-    fetchDashboardSummary();
   }, [isAuthenticated, user]);
 
   return (
@@ -68,7 +57,7 @@ export const Dashboard = () => {
           ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        xxx
+        {/* <ChartExample/> */}
         <div>
           <DataTable columns={columns} data={transactions} />
         </div>
