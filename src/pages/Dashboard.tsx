@@ -8,7 +8,8 @@ import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
 import type { DashboardSummary } from "@/types/dashboardSummary";
 import { useDashboard } from "@/hooks/useDashboard";
-import { DashboardBarChart } from "@/components/common/Chart";
+import DashboardBarChart from "@/components/dashboard/DashboardBarChart";
+import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
 
 export const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
@@ -56,11 +57,12 @@ export const Dashboard = () => {
             />
           ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
         <DashboardBarChart />
-        <div>
-          <DataTable columns={columns} data={transactions} />
-        </div>
+        <DashboardPieChart />
+      </div>
+      <div>
+        <DataTable columns={columns} data={transactions} />
       </div>
     </div>
   );
