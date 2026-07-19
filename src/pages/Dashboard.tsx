@@ -8,6 +8,7 @@ import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
 import type { DashboardSummary } from "@/types/dashboardSummary";
 import { useDashboard } from "@/hooks/useDashboard";
+import { DashboardBarChart } from "@/components/common/Chart";
 
 export const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
@@ -23,7 +24,6 @@ export const Dashboard = () => {
         console.error("Fetch dashboard transactions error: ", error);
       }
     };
-
 
     fetchTransactions();
   }, [isAuthenticated, user]);
@@ -57,7 +57,7 @@ export const Dashboard = () => {
           ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* <ChartExample/> */}
+        <DashboardBarChart />
         <div>
           <DataTable columns={columns} data={transactions} />
         </div>

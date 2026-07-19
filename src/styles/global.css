@@ -10,7 +10,6 @@
     --font-sans: 'Geist Variable', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     
-    /* shadcn 原有变量保持结构 */
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -43,7 +42,6 @@
     --color-foreground: var(--foreground);
     --color-background: var(--background);
     
-    /* 圆角保持原样 */
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -53,63 +51,49 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ============================================
-   TORCHFLARE THEME — 橙红火炬主题
-   适用于 TorchEye Ledger 理财管理系统
-   ============================================ */
 
 :root {
-    /* 背景层 — 温暖深色优先（暗色模式作为默认） */
-    --background: oklch(0.12 0.02 25);      /* Deep Ash — 带红底的深炭灰 */
-    --foreground: oklch(0.92 0.01 45);      /* Pure Ember — 暖白文本 */
+    --background: oklch(0.12 0.02 25);      
+    --foreground: oklch(0.92 0.01 45);      
     
-    /* 卡片 & 面板 */
-    --card: oklch(0.16 0.02 25);            /* Warm Charcoal */
+    --card: oklch(0.16 0.02 25);           
     --card-foreground: oklch(0.92 0.01 45);
     
-    /* 弹出层 */
     --popover: oklch(0.16 0.02 25);
     --popover-foreground: oklch(0.92 0.01 45);
     
-    /* ===== 核心：火炬橙红色系 ===== */
-    --primary: oklch(0.65 0.18 35);          /* Torch Core #FF4D00 */
-    --primary-foreground: oklch(1 0 0);      /* 白色文本 */
+    --primary: oklch(0.65 0.18 35);          
+    --primary-foreground: oklch(1 0 0);     
     
-    /* 次要按钮 / 低强调动作 */
-    --secondary: oklch(0.28 0.04 25);        /* Ember Surface */
+    --secondary: oklch(0.28 0.04 25);        
     --secondary-foreground: oklch(0.92 0.01 45);
     
-    /* 静默文本 & 背景 */
-    --muted: oklch(0.20 0.02 25);            /* 更深的炭灰 */
-    --muted-foreground: oklch(0.65 0.02 45); /* Faded Ember */
+
+    --muted: oklch(0.20 0.02 25);            
+    --muted-foreground: oklch(0.65 0.02 45); 
     
-    /* 强调色（与 primary 一致，保持统一） */
-    --accent: oklch(0.65 0.18 35);           /* 复用 Torch Core */
+
+    --accent: oklch(0.65 0.18 35);           
     --accent-foreground: oklch(1 0 0);
     
-    /* 错误 / 支出 / 危险 */
-    --destructive: oklch(0.55 0.20 25);      /* Burn Mark #D62828 */
+    --destructive: oklch(0.55 0.20 25);      
     --destructive-foreground: oklch(1 0 0);
     
-    /* 边框 & 输入框 */
-    --border: oklch(0.28 0.03 25);           /* Ash Line */
-    --input: oklch(0.22 0.02 25);            /* 输入框背景 */
-    --ring: oklch(0.65 0.18 35);             /* 焦点环 — 火炬橙 */
+    --border: oklch(0.28 0.03 25);           
+    --input: oklch(0.22 0.02 25);            
+    --ring: oklch(0.65 0.18 35);             
     
-    /* 图表颜色 — 橙红家族 */
-    --chart-1: oklch(0.65 0.18 35);          /* Torch Core */
-    --chart-2: oklch(0.72 0.16 45);          /* Torch Glow #FF6A13 */
-    --chart-3: oklch(0.58 0.14 35);          /* Ash Ember #CC3B00 */
-    --chart-4: oklch(0.80 0.12 65);          /* Ember Light #FFB347 */
-    --chart-5: oklch(0.50 0.18 25);          /* Burn Mark 变体 */
+    --chart-1: oklch(0.65 0.18 35);       
+    --chart-2: oklch(0.72 0.16 45);      
+    --chart-3: oklch(0.58 0.14 35);          
+    --chart-4: oklch(0.80 0.12 65);         
+    --chart-5: oklch(0.50 0.18 25);          
     
-    /* 圆角 */
-    --radius: 0.75rem;                       /* 稍大一点，更现代 */
+    --radius: 0.75rem;                      
     
-    /* ===== 侧边栏（TorchEye 专属） ===== */
-    --sidebar: oklch(0.14 0.02 25);          /* 比主背景稍深 */
+    --sidebar: oklch(0.14 0.02 25);         
     --sidebar-foreground: oklch(0.92 0.01 45);
-    --sidebar-primary: oklch(0.65 0.18 35);  /* 火炬橙 */
+    --sidebar-primary: oklch(0.65 0.18 35); 
     --sidebar-primary-foreground: oklch(1 0 0);
     --sidebar-accent: oklch(0.22 0.03 25);
     --sidebar-accent-foreground: oklch(0.92 0.01 45);
@@ -117,12 +101,9 @@
     --sidebar-ring: oklch(0.65 0.18 35);
 }
 
-/* ============================================
-   浅色模式（TorchLight）— 可选，保留温暖感
-   ============================================ */
 .light {
-    --background: oklch(0.98 0.01 35);       /* 暖白背景 #FFF5EE */
-    --foreground: oklch(0.14 0.02 25);       /* Warm Charcoal 文本 */
+    --background: oklch(0.98 0.01 35);     
+    --foreground: oklch(0.14 0.02 25);      
     
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.14 0.02 25);
@@ -130,10 +111,10 @@
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.14 0.02 25);
     
-    --primary: oklch(0.65 0.18 35);          /* Torch Core 不变 */
+    --primary: oklch(0.65 0.18 35);         
     --primary-foreground: oklch(1 0 0);
     
-    --secondary: oklch(0.94 0.02 35);        /* 浅暖灰 */
+    --secondary: oklch(0.94 0.02 35);       
     --secondary-foreground: oklch(0.14 0.02 25);
     
     --muted: oklch(0.94 0.01 35);
@@ -145,7 +126,7 @@
     --destructive: oklch(0.55 0.20 25);
     --destructive-foreground: oklch(1 0 0);
     
-    --border: oklch(0.88 0.02 35);           /* 暖沙色边框 */
+    --border: oklch(0.88 0.02 35);          
     --input: oklch(0.96 0.01 35);
     --ring: oklch(0.65 0.18 35);
     
@@ -159,10 +140,6 @@
     --sidebar-ring: oklch(0.65 0.18 35);
 }
 
-/* ============================================
-   保持 .dark 类与 :root 相同（暗色默认）
-   TorchEye Ledger 默认使用暗色主题
-   ============================================ */
 .dark {
     --background: oklch(0.12 0.02 25);
     --foreground: oklch(0.92 0.01 45);
@@ -209,18 +186,15 @@
     @apply font-sans;
   }
   
-  /* 可选：为 TorchEye Ledger 添加等宽字体用于数字 */
   .ledger-number {
     font-family: 'JetBrains Mono', monospace;
     font-feature-settings: "tnum";
   }
   
-  /* 火炬橙焦点环样式 */
   :focus-visible {
     outline-color: oklch(0.65 0.18 35);
   }
   
-  /* 选中文本颜色 — 火炬橙背景 */
   ::selection {
     background-color: oklch(0.65 0.18 35 / 0.3);
     color: oklch(0.92 0.01 45);
