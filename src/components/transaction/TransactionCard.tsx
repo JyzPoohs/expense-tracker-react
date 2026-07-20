@@ -5,7 +5,7 @@ import type { TransactionCardProps } from "@/config/TransactionCardProps";
 import { AlertDialog } from "@/components/common/AlertDialog";
 import { deleteAlertDialog } from "@/config/AlertDialogConfig";
 
-export const TransactionCard = ({ transaction, handleDelete }: TransactionCardProps) => {
+export const TransactionCard = ({ transaction, handleDelete, loadTransactions }: TransactionCardProps) => {
   return (
     <>
       <div key={transaction.id}>
@@ -22,7 +22,7 @@ export const TransactionCard = ({ transaction, handleDelete }: TransactionCardPr
 
           <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
           <ViewTransactionInfo transaction={transaction} />
-          <EditTransactionDialog transaction={transaction} />
+          <EditTransactionDialog transaction={transaction} onSuccess={loadTransactions} />
           <AlertDialog
             title={deleteAlertDialog.title}
             message={deleteAlertDialog.message}

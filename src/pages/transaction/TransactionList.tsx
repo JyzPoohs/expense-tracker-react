@@ -76,7 +76,7 @@ export const TransactionListPage = () => {
           handleReset={handleReset}
         />
         <div className="ml-auto">
-          <CreateTransactionForm />
+          <CreateTransactionForm onSuccess={loadTransactions} />
         </div>
       </div>
       {Object.entries(groupedTransactions).length > 0 ? (
@@ -88,6 +88,7 @@ export const TransactionListPage = () => {
                 key={transaction.id}
                 transaction={transaction}
                 handleDelete={handleDelete}
+                loadTransactions={loadTransactions}
               />
             ))}
             <Separator />

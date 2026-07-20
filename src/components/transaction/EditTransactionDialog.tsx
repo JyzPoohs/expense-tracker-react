@@ -11,19 +11,29 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import type { Transaction, TransactionFormData } from "@/types/transaction";
 import { updateTransaction } from "@/services/transactionService";
+import { useState } from "react";
 
 export const EditTransactionDialog = ({
   transaction,
+  onSuccess,
 }: {
   transaction: Transaction;
+  onSuccess: () => void;
 }) => {
   const handleUpdate = async (data: TransactionFormData) => {
     await updateTransaction(transaction.id, data);
 
     toast.success("Transaction updated");
+
+    onSuccess();
+    
+    setOpen(false);
   };
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Pencil />
