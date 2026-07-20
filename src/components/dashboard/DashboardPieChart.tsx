@@ -1,6 +1,6 @@
 import { Pie, PieChart } from "recharts";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartLegend,
@@ -42,6 +42,9 @@ const chartData = [
 export default function DashboardPieChart() {
   return (
     <Card className="flex flex-col">
+      <CardHeader className="text-center">
+        <CardDescription>Expense Distribution (RM)</CardDescription>
+      </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
@@ -56,26 +59,9 @@ export default function DashboardPieChart() {
               data={chartData}
               dataKey="total"
               nameKey="expense"
-              labelLine={false}
-              label={({ payload, ...props }) => {
-                return (
-                  <text
-                    cx={props.cx}
-                    cy={props.cy}
-                    x={props.x}
-                    y={props.y}
-                    textAnchor={props.textAnchor}
-                    dominantBaseline={props.dominantBaseline}
-                    fill="var(--foreground)"
-                  >
-                    {payload.total}
-                  </text>
-                );
-              }}
             />
             <ChartLegend
               content={<ChartLegendContent nameKey="expense" />}
-
             />
           </PieChart>
         </ChartContainer>

@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 import {
   ChartContainer,
@@ -23,6 +23,9 @@ const chartData = [
 export default function DashboardBarChart() {
   return (
     <Card>
+      <CardHeader className="text-center">
+        <CardDescription>Monthly Expense and Income (RM)</CardDescription>
+      </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
           <BarChart accessibilityLayer data={chartData}>

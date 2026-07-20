@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import { getAllCategorires } from "../../services/categoryService";
+import { useMemo, useState } from "react";
 import type { Transaction } from "@/types/transaction";
 import { CreateTransactionForm } from "../../components/transaction/CreateTransactionDialog";
 import { Separator } from "@/components/ui/separator";
@@ -64,10 +63,6 @@ export const TransactionListPage = () => {
       console.error("Delete failed:", error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, [filters]);
 
   return (
     <div className="p-3">
