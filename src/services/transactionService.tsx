@@ -1,5 +1,6 @@
 import type { TransactionFormData } from "@/types/transaction";
 import api from "../api/axios";
+import { formatDateToYYYYMMDD } from "@/utils/date";
 
 const TRANSACTIONS_BASE_URL = "/transactions";
 
@@ -27,7 +28,10 @@ export const getTransactionById = async (id: number) => {
 };
 
 export const createTransaction = async (transaction: TransactionFormData) => {
-  const response = await api.post(TRANSACTIONS_BASE_URL, transaction);
+  const response = await api.post("/transactions", {
+    ...transaction,
+    date: formatDateToYYYYMMDD(transaction.date),
+  });
   return response.data;
 };
 

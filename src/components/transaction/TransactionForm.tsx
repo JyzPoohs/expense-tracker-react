@@ -1,9 +1,4 @@
-import {
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FieldGroup, Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -13,7 +8,6 @@ import { DatePickerInput } from "@/components/common/DatePicker";
 import { Textarea } from "@/components/ui/textarea";
 import type { Category } from "@/types/category";
 import { SelectComponent } from "@/components/common/SelectComponent";
-
 import type { TransactionFormData } from "@/types/transaction";
 import { useEffect, useState } from "react";
 import { getAllCategorires } from "@/services/categoryService";
@@ -48,7 +42,6 @@ export const TransactionForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     await onSubmit(formData);
   };
 
