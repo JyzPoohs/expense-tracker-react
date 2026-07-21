@@ -1,9 +1,12 @@
 import { getDashboardSummary } from "@/services/summaryService";
+import { getAllTransactions } from "@/services/transactionService";
 import type { DashboardSummary } from "@/types/dashboardSummary";
+import type { TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
 
 export const useDashboard = () => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
+  const [transactions, setTransactions] = useState<TransactionType[]>([]);
 
   const fetchDashboardSummary = async () => {
     try {
@@ -15,9 +18,20 @@ export const useDashboard = () => {
     }
   };
 
+  const fetchTransactions = async () => {
+    try {
+      const data = await getAllTransactions();
+
+      setTransactions(data);
+    } catch (error) {
+      console.error("Fetch dashboard transactions error: ", error);
+    }
+  };
+
   useEffect(() => {
     fetchDashboardSummary();
+    fetchTransactions();
   }, []);
 
-  return { summary, fetchDashboardSummary };
+  return { summary, transactions, fetchDashboardSummary, fetchTransactions };
 };

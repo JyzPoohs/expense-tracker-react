@@ -1,7 +1,6 @@
-import { columns, type TransactionType } from "@/types/transaction";
+import { columns } from "@/types/transaction";
 import { DataTable } from "@/components/layouts/DataTable";
-import { useEffect, useState } from "react";
-import { getAllTransactions } from "@/services/transactionService";
+import { useEffect } from "react";
 import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCardConfig } from "@/config/SummaryCardsConfig";
@@ -13,20 +12,10 @@ import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
 
 export const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
-  const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const { summary } = useDashboard();
+  const { transactions, fetchTransactions } = useDashboard();
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const data = await getAllTransactions();
-
-        setTransactions(data);
-      } catch (error) {
-        console.error("Fetch dashboard transactions error: ", error);
-      }
-    };
-
-    fetchTransactions();
   }, [isAuthenticated, user]);
 
   return (
@@ -34,7 +23,7 @@ export const Dashboard = () => {
       <div className="flex my-5">
         <h1>Dashboard</h1>
         <div className="ml-auto">
-          <CreateTransactionForm />
+          <CreateTransactionForm onSuccess={fetchTransactions}/>
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">
