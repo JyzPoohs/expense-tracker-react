@@ -8,6 +8,9 @@ import { TransactionFilters } from "@/components/transaction/TransactionFilters"
 import { formatDate } from "@/utils/date";
 import { useTransactions } from "@/hooks/useTransactions";
 import { useCategories } from "@/hooks/useCategories";
+import { iconMap } from "@/utils/iconMapper";
+import type { LucideIcon } from "lucide-react";
+import type { Category } from "@/types/category";
 
 export const TransactionListPage = () => {
   const now = new Date();
@@ -64,6 +67,16 @@ export const TransactionListPage = () => {
     }
   };
 
+  const categoryMap = useMemo(() => {
+    return categories.reduce(
+      (map, category) => {
+        map[category.name] = category;
+        return map;
+      },
+      {} as Record<string, Category>,
+    );
+  }, [categories]);
+
   return (
     <div className="p-3">
       <h1 className="text-center my-3">Transaction List</h1>
@@ -89,6 +102,7 @@ export const TransactionListPage = () => {
                 transaction={transaction}
                 handleDelete={handleDelete}
                 loadTransactions={loadTransactions}
+                categoryMap={categoryMap}
               />
             ))}
             <Separator />

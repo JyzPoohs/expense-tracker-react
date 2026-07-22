@@ -4,14 +4,24 @@ import { ViewTransactionInfo } from "./ViewTransactionDialog";
 import type { TransactionCardProps } from "@/config/TransactionCardProps";
 import { AlertDialog } from "@/components/common/AlertDialog";
 import { deleteAlertDialog } from "@/config/AlertDialogConfig";
+import { iconMap } from "@/utils/iconMapper";
 
-export const TransactionCard = ({ transaction, handleDelete, loadTransactions }: TransactionCardProps) => {
+export const TransactionCard = ({
+  transaction,
+  handleDelete,
+  loadTransactions,
+  categoryMap,
+}: TransactionCardProps) => {
+  const category = categoryMap[transaction.category];
+
+  const Icon = iconMap[category?.icon ?? "Car"] ?? Car;
+
   return (
     <>
       <div key={transaction.id}>
         <div className="card mb-3 p-3 flex gap-4">
           <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
-            <Car />
+            <Icon />
           </span>
           <div>
             <p>{transaction.note}</p>
@@ -22,7 +32,10 @@ export const TransactionCard = ({ transaction, handleDelete, loadTransactions }:
 
           <p className="ml-auto">{`${transaction.type == "INCOME" ? `+ ${transaction.amount}` : `- ${transaction.amount}`}`}</p>
           <ViewTransactionInfo transaction={transaction} />
-          <EditTransactionDialog transaction={transaction} onSuccess={loadTransactions} />
+          <EditTransactionDialog
+            transaction={transaction}
+            onSuccess={loadTransactions}
+          />
           <AlertDialog
             title={deleteAlertDialog.title}
             message={deleteAlertDialog.message}
