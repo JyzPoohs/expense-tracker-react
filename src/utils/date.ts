@@ -1,8 +1,7 @@
 import { format } from "date-fns";
 
 export function formatDate(date: string): string {
-  const newDate = new Date(date);
-  return newDate.toISOString().split("T")[0];
+  return new Date(date).toLocaleDateString("sv-SE");
 }
 
 export function formatDateToYYYYMMDD(date: Date): string {

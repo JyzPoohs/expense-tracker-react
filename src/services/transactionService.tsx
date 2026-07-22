@@ -28,7 +28,7 @@ export const getTransactionById = async (id: number) => {
 };
 
 export const createTransaction = async (transaction: TransactionFormData) => {
-  const response = await api.post("/transactions", {
+  const response = await api.post(TRANSACTIONS_BASE_URL + "/", {
     ...transaction,
     date: formatDateToYYYYMMDD(transaction.date),
   });
@@ -39,7 +39,10 @@ export const updateTransaction = async (
   id: number,
   transaction: TransactionFormData,
 ) => {
-  const response = await api.put(TRANSACTIONS_BASE_URL + "/" + id, transaction);
+  const response = await api.put(TRANSACTIONS_BASE_URL + "/" + id, {
+    ...transaction,
+    date: formatDateToYYYYMMDD(transaction.date),
+  });
   return response.data;
 };
 
