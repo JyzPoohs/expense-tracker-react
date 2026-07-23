@@ -8,8 +8,6 @@ import { TransactionFilters } from "@/components/transaction/TransactionFilters"
 import { formatDate } from "@/utils/date";
 import { useTransactions } from "@/hooks/useTransactions";
 import { useCategories } from "@/hooks/useCategories";
-import { iconMap } from "@/utils/iconMapper";
-import type { LucideIcon } from "lucide-react";
 import type { Category } from "@/types/category";
 
 export const TransactionListPage = () => {

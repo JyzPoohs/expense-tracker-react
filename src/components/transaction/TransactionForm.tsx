@@ -6,11 +6,10 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DatePickerInput } from "@/components/common/DatePicker";
 import { Textarea } from "@/components/ui/textarea";
-import type { Category } from "@/types/category";
 import { SelectComponent } from "@/components/common/SelectComponent";
 import type { TransactionFormData } from "@/types/transaction";
-import { useEffect, useState } from "react";
-import { getAllCategorires } from "@/services/categoryService";
+import { useState } from "react";
+import { useCategories } from "@/hooks/useCategories";
 
 interface TransactionFormProps {
   initialData?: TransactionFormData;
@@ -21,7 +20,7 @@ export const TransactionForm = ({
   initialData,
   onSubmit,
 }: TransactionFormProps) => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useCategories();
   const [formData, setFormData] = useState<TransactionFormData>(
     initialData ?? {
       note: "",
@@ -32,6 +31,15 @@ export const TransactionForm = ({
       date: new Date(),
     },
   );
+
+  const handleCategory = () => {
+    return categories
+      .filter((category) => category.type === formData.type)
+      .map((cat) => ({
+        label: cat.name,
+        value: cat.name,
+      }));
+  };
 
   const handleChange = (field: keyof TransactionFormData, value: any) => {
     setFormData((prev) => ({
@@ -44,15 +52,6 @@ export const TransactionForm = ({
     e.preventDefault();
     await onSubmit(formData);
   };
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getAllCategorires();
-      setCategories(data);
-    };
-
-    fetchCategories();
-  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -110,32 +109,46 @@ export const TransactionForm = ({
             }}
           />
         </Field>
-        <Field>
-          <Label htmlFor="category">Category</Label>
-          <SelectComponent
-            label="Category"
-            items={categories.map((cat) => ({
-              label: cat.name,
-              value: cat.name,
-            }))}
-            value={formData.category}
-            onChange={(value) => handleChange("category", value)}
-          />
-        </Field>
-        <Label>Account</Label>
         {formData.type === "TRANSFER" ? (
-          <div className="flex gap-2">
+          <>
+            <Label>Account</Label>
+            <div className="flex gap-2">
+              <Field>
+                <SelectComponent
+                  label="From Account"
+                  items={categories.map((cat) => ({
+                    label: cat.name,
+                    value: cat.name,
+                  }))}
+                  value={formData.category}
+                  onChange={(value) => handleChange("category", value)}
+                />
+              </Field>
+              <Field>
+                <SelectComponent
+                  label="To Account"
+                  items={categories.map((cat) => ({
+                    label: cat.name,
+                    value: cat.name,
+                  }))}
+                  value={formData.category}
+                  onChange={(value) => handleChange("category", value)}
+                />
+              </Field>
+            </div>
+          </>
+        ) : (
+          <>
             <Field>
+              <Label htmlFor="category">Category</Label>
               <SelectComponent
-                label="From Account"
-                items={categories.map((cat) => ({
-                  label: cat.name,
-                  value: cat.name,
-                }))}
+                label="Category"
+                items={handleCategory()}
                 value={formData.category}
                 onChange={(value) => handleChange("category", value)}
               />
             </Field>
+            <Label>Account</Label>
             <Field>
               <SelectComponent
                 label="To Account"
@@ -147,19 +160,7 @@ export const TransactionForm = ({
                 onChange={(value) => handleChange("category", value)}
               />
             </Field>
-          </div>
-        ) : (
-          <Field>
-            <SelectComponent
-              label="To Account"
-              items={categories.map((cat) => ({
-                label: cat.name,
-                value: cat.name,
-              }))}
-              value={formData.category}
-              onChange={(value) => handleChange("category", value)}
-            />
-          </Field>
+          </>
         )}
         <Field>
           <Label htmlFor="remarks">Remarks</Label>
