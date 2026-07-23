@@ -20,7 +20,12 @@ export const TransactionCard = ({
     <>
       <div key={transaction.id}>
         <div className="card mb-3 p-3 flex gap-4">
-          <span className="rounded-full bg-amber-300 w-10 h-10 flex items-center justify-center">
+          <span
+            className="rounded-full w-10 h-10 flex items-center justify-center"
+            style={{
+              backgroundColor: category?.color ?? "#fbbf24",
+            }}
+          >
             <Icon />
           </span>
           <div>

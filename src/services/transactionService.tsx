@@ -28,7 +28,7 @@ export const getTransactionById = async (id: number) => {
 };
 
 export const createTransaction = async (transaction: TransactionFormData) => {
-  const response = await api.post(TRANSACTIONS_BASE_URL + "/", {
+  const response = await api.post(TRANSACTIONS_BASE_URL, {
     ...transaction,
     date: formatDateToYYYYMMDD(transaction.date),
   });
