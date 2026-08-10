@@ -1,73 +1,134 @@
-# React + TypeScript + Vite
+  # TorchEye Ledger
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack Expense Tracker application built with **React**, **Spring Boot**, **Keycloak**, and **MySQL**. This project demonstrates a modern enterprise-style architecture with secure authentication, RESTful APIs, and Dockerized infrastructure.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### Authentication & Security
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* User registration and login with Keycloak
+* OAuth2 / OpenID Connect authentication
+* JWT-based authorization
+* Protected REST APIs using Spring Security
+* Role-based access control
 
-## Expanding the ESLint configuration
+### Expense Management
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Create, update, and delete transactions
+* Create, update, and delete categories
+* Filter transactions by month, category, and transaction type
+* Dashboard summary with income, expense, and balance
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### User Management
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* Automatic user provisioning on first login
+* User data linked with Keycloak through `auth_user_id`
+* Separate application user data from identity management
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Tech Stack
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Axios
+
+### Backend
+
+* Spring Boot
+* Spring Security
+* Spring Data JPA
+* Hibernate
+
+### Authentication
+
+* Keycloak
+* OAuth2 Resource Server
+* JWT
+
+### Database
+
+* MySQL
+* Separate databases for:
+
+  * Keycloak
+  * Expense Tracker
+
+### DevOps
+
+* Docker
+* Docker Compose
+
+---
+
+## Project Structure
+
+```text
+Frontend (React)
+        │
+        ▼
+Spring Boot REST API
+        │
+        ▼
+Spring Security + JWT
+        │
+        ▼
+MySQL Database
+        ▲
+        │
+Keycloak Authentication Server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+* Java 21+
+* Node.js 24+
+* Docker Desktop
+* MySQL (optional if using Docker)
+
+### Run the Project
+
+1. Start MySQL and Keycloak
+
+```bash
+docker compose up
 ```
+
+2. Start the Spring Boot backend
+
+```bash
+./mvnw spring-boot:run
+```
+
+3. Start the React frontend
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## Current Progress
+
+Implemented modules:
+
+* ✅ Keycloak authentication
+* ✅ Spring Security JWT authentication
+* ✅ User auto provisioning
+* ✅ Category management
+* ✅ Transaction management
+* ✅ Dashboard summary
+* ✅ Dockerized MySQL and Keycloak
+* ✅ RESTful API architecture
+
+This project is actively being developed, and additional features will be added in future updates.
