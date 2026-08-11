@@ -1,6 +1,6 @@
 import { columns } from "@/types/transaction";
 import { DataTable } from "@/components/layouts/DataTable";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCardConfig } from "@/config/SummaryCardsConfig";
@@ -9,21 +9,34 @@ import type { DashboardSummary } from "@/types/dashboardSummary";
 import { useDashboard } from "@/hooks/useDashboard";
 import DashboardBarChart from "@/components/dashboard/DashboardBarChart";
 import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
+import { initializeUser } from "@/services/authService";
 
 export const Dashboard = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const { user, isAuthenticated } = useAuth();
-  const { summary } = useDashboard();
-  const { transactions, fetchTransactions } = useDashboard();
+  const { summary, transactions, fetchTransactions } = useDashboard();
 
   useEffect(() => {
-  }, [isAuthenticated, user]);
+    async () => {
+      if (isAuthenticated && !user) {
+        try {
+          const user = await initializeUser();
+          if (user !== null) {
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error initializing user: ", error);
+        }
+      };
+    }
+  }, []);
 
   return (
     <div>
       <div className="flex my-5">
         <h1>Dashboard</h1>
         <div className="ml-auto">
-          <CreateTransactionForm onSuccess={fetchTransactions}/>
+          <CreateTransactionForm onSuccess={fetchTransactions} />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">
