@@ -4,7 +4,7 @@ import type { DashboardSummary } from "@/types/dashboardSummary";
 import type { TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
 
-export const useDashboard = () => {
+export const useDashboard = (initialized: boolean) => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
 
@@ -29,9 +29,13 @@ export const useDashboard = () => {
   };
 
   useEffect(() => {
+    if(!initialized) {
+      return;
+    }
+
     fetchDashboardSummary();
     fetchTransactions();
-  }, []);
+  }, [initialized]);
 
   return { summary, transactions, fetchDashboardSummary, fetchTransactions };
 };

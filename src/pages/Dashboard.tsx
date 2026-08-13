@@ -12,24 +12,26 @@ import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
 import { initializeUser } from "@/services/authService";
 
 export const Dashboard = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { user, isAuthenticated } = useAuth();
-  const { summary, transactions, fetchTransactions } = useDashboard();
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const { summary, transactions, fetchTransactions } = useDashboard(initialized);
 
   useEffect(() => {
-    async () => {
-      if (isAuthenticated && !user) {
-        try {
-          const user = await initializeUser();
-          if (user !== null) {
-            setLoading(false);
-          }
-        } catch (error) {
-          console.error("Error initializing user: ", error);
-        }
-      };
+    async function init() {
+      try {
+        await initializeUser();
+      } catch (error) {
+        console.error("Initialization failed", error);
+      } finally {
+        setInitialized(true);
+      }
     }
+
+    init();
   }, []);
+
+  if (!initialized) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
