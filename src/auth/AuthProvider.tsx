@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { AuthContextType, User } from "@/types/auth";
 
 import keycloak from "./keycloak";
+import { initializeUser } from "@/services/authService";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -11,18 +12,18 @@ interface Props {
   children: ReactNode;
 }
 
-let keycloakInitialized = false;
-
 export function AuthProvider({ children }: Props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<string>();
   const [user, setUser] = useState<User | null>(null);
+  const [isUserInitialized, setIsUserInitialized] = useState(false);
+  const [keycloakInitialized, setKeycloakInitialized] = useState(false);
 
   useEffect(() => {
     if (keycloakInitialized) return;
 
-    keycloakInitialized = true;
+    setKeycloakInitialized(true);
 
     keycloak
       .init({
@@ -30,7 +31,7 @@ export function AuthProvider({ children }: Props) {
         pkceMethod: "S256",
         checkLoginIframe: false,
       })
-      .then((authenticated) => {
+      .then(async (authenticated) => {
         setIsAuthenticated(authenticated);
 
         if (authenticated) {
@@ -50,6 +51,11 @@ export function AuthProvider({ children }: Props) {
                 }
               )?.roles || [],
           });
+
+          await initializeUser();
+
+          setIsUserInitialized(true);
+
         }
       })
       .finally(() => {
@@ -59,12 +65,11 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      keycloak.updateToken(60).catch(() => {
-        console.log("Token refresh failed");
-      });
+      keycloak.updateToken(60);
     }, 60000);
 
     return () => clearInterval(interval);
+
   }, []);
 
   const login = () => keycloak.login();
@@ -80,6 +85,7 @@ export function AuthProvider({ children }: Props) {
         user,
         login,
         logout,
+        isUserInitialized
       }}
     >
       {children}

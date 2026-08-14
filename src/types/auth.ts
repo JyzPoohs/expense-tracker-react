@@ -12,4 +12,5 @@ export interface AuthContextType {
   user: User | null;
   login: () => void;
   logout: () => void;
+  isUserInitialized: boolean;
 }

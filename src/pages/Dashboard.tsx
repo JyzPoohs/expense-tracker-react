@@ -1,7 +1,5 @@
 import { columns } from "@/types/transaction";
 import { DataTable } from "@/components/layouts/DataTable";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/auth/AuthProvider";
 import { SummaryCard } from "@/components/sumamry/SummaryCard";
 import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
@@ -9,29 +7,9 @@ import type { DashboardSummary } from "@/types/dashboardSummary";
 import { useDashboard } from "@/hooks/useDashboard";
 import DashboardBarChart from "@/components/dashboard/DashboardBarChart";
 import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
-import { initializeUser } from "@/services/authService";
 
 export const Dashboard = () => {
-  const [initialized, setInitialized] = useState<boolean>(false);
-  const { summary, transactions, fetchTransactions } = useDashboard(initialized);
-
-  useEffect(() => {
-    async function init() {
-      try {
-        await initializeUser();
-      } catch (error) {
-        console.error("Initialization failed", error);
-      } finally {
-        setInitialized(true);
-      }
-    }
-
-    init();
-  }, []);
-
-  if (!initialized) {
-    return <div>Loading...</div>;
-  }
+  const { summary, transactions, fetchTransactions } = useDashboard();
 
   return (
     <div>

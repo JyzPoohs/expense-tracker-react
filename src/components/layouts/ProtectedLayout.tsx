@@ -3,13 +3,13 @@ import { useAuth } from "@/auth/AuthProvider";
 import { Spinner } from "../ui/spinner";
 
 export const ProtectedLayout = () => {
-  const { isLoading, isAuthenticated } = useAuth();
+  const { isLoading, isAuthenticated, isUserInitialized } = useAuth();
 
-  if (isLoading) {
-    return <Spinner />;
+  if (isLoading || !isUserInitialized) {
+    return <div className="text-center py-10"><Spinner /> Loading...</div>;
   }
 
-  if(!isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 
