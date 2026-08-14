@@ -61,12 +61,14 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <AlertDialog
-              {...logoutDialog}
-              icon={LogOut}
-              triggerClassName="bg-transparent hover:bg-transparent cursor-pointer"
-              onConfirm={logout}
-            />
+            <div>
+              <AlertDialog
+                {...logoutDialog}
+                icon={LogOut}
+                triggerClassName="bg-transparent hover:bg-transparent cursor-pointer"
+                onConfirm={logout}
+              />
+            </div>
             <SidebarMenuButton></SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

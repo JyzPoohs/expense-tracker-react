@@ -25,7 +25,7 @@ export const AlertDialog = ({
   return (
     <AlertDialogRoot>
       <AlertDialogTrigger asChild>
-        <Button type="button" className={triggerClassName}>
+        <Button className={triggerClassName}>
           <Icon /> 
         </Button>
       </AlertDialogTrigger>

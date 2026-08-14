@@ -4,6 +4,7 @@ import { useAuth } from "@/auth/AuthProvider";
 import { SearchBar } from "../common/SearchBar";
 import { AlertDialog } from "../common/AlertDialog";
 import { logoutDialog } from "@/config/AlertDialogConfig";
+import { Button } from "../ui/button";
 
 export function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -15,14 +16,16 @@ export function Header() {
         <span className="font-semibold">TorchEye Ledger</span>
         <div className="flex items-center gap-4">
           <SearchBar />
-          <button
+          <Button variant="ghost" size="icon-xs" asChild
             className="cursor-pointer"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             {theme === "dark" ? <Moon /> : <Sun />}
-          </button>
-          <Bell className="cursor-pointer" />
-          <AlertDialog {...logoutDialog} icon={LogOut} triggerClassName="bg-transparent hover:bg-transparent cursor-pointer" onConfirm={logout}/>
+          </Button>
+          <Button variant="ghost" size="icon-xs" asChild>
+            <Bell className="cursor-pointer" />
+          </Button>
+          <AlertDialog {...logoutDialog} icon={LogOut} triggerClassName="bg-transparent hover:bg-transparent cursor-pointer" onConfirm={logout} />
           <span>|</span>
           <div className="flex items-center gap-2">
             <CircleUserRound />

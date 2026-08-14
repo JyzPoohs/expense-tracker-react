@@ -9,14 +9,14 @@ import DashboardBarChart from "@/components/dashboard/DashboardBarChart";
 import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
 
 export const Dashboard = () => {
-  const { summary, transactions, fetchTransactions } = useDashboard();
+  const { summary, transactions, refreshDashboard } = useDashboard();
 
   return (
     <div>
       <div className="flex my-5">
         <h1>Dashboard</h1>
         <div className="ml-auto">
-          <CreateTransactionForm onSuccess={fetchTransactions} />
+          <CreateTransactionForm onSuccess={refreshDashboard} />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 my-5">

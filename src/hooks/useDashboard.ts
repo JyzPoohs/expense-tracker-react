@@ -28,10 +28,15 @@ export const useDashboard = () => {
     }
   };
 
+  const refreshDashboard = async () => {
+    await fetchDashboardSummary();
+    await fetchTransactions();
+  }
+
   useEffect(() => {
     fetchDashboardSummary();
     fetchTransactions();
   }, []);
 
-  return { summary, transactions, fetchDashboardSummary, fetchTransactions };
+  return { summary, transactions, fetchDashboardSummary, fetchTransactions, refreshDashboard };
 };
