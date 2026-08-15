@@ -1,6 +1,6 @@
 import { Pie, PieChart } from "recharts";
 
-import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartLegend,
@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/chart";
 
 import { dashboardPieChartConfig as chartConfig } from "@/config/ChartConfig";
+import { useState } from "react";
+import { formatChartDate } from "@/utils/date";
 
 const chartData = [
   {
@@ -40,10 +42,13 @@ const chartData = [
 ];
 
 export default function DashboardPieChart() {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
   return (
-    <Card className="flex flex-col">
+    <Card >
       <CardHeader className="text-center">
-        <CardDescription>Expense Distribution (RM)</CardDescription>
+        <CardTitle>Monthly Expense Distribution (RM)</CardTitle>
+        <CardDescription>{formatChartDate(currentMonth)}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

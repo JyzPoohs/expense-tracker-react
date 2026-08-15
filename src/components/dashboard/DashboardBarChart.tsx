@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   ChartContainer,
@@ -10,6 +10,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { dashboardBarChartConfig as chartConfig } from "@/config/ChartConfig";
+import { useState } from "react";
+import { formatChartDate } from "@/utils/date";
 
 const chartData = [
   { month: "January", expense: 186, income: 80 },
@@ -21,13 +23,23 @@ const chartData = [
 ];
 
 export default function DashboardBarChart() {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [previousMonth, setPreviousMonth] = useState(() => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 6);
+    return date;
+  });
+
   return (
-    <Card>
+    <Card >
       <CardHeader className="text-center">
-        <CardDescription>Monthly Expense and Income (RM)</CardDescription>
+        <CardTitle>Monthly Income & Expenses (RM)</CardTitle>
+        <CardDescription>
+          {formatChartDate(new Date(previousMonth))} – {formatChartDate(new Date(currentMonth))}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+        <ChartContainer config={chartConfig} className="aspect-square w-full max-h-[250px]">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
