@@ -10,25 +10,21 @@ import {
 import { dashboardBarChartConfig as chartConfig } from "@/config/ChartConfig";
 import { useState } from "react";
 import { formatChartDate } from "@/utils/date";
-import { useDashboard } from "@/hooks/useDashboard";
+import type { ChartData } from "@/types/chart";
 
-// const chartData = [
-//   { month: "January", expense: 186, income: 80 },
-//   { month: "February", expense: 305, income: 200 },
-//   { month: "March", expense: 237, income: 120 },
-//   { month: "April", expense: 73, income: 190 },
-//   { month: "May", expense: 209, income: 130 },
-//   { month: "June", expense: 214, income: 140 },
-// ];
+interface DashboardBarChartProps {
+  barChartData: ChartData[];
+}
 
-export default function DashboardBarChart() {
+export default function DashboardBarChart({
+  barChartData,
+}: DashboardBarChartProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [previousMonth, setPreviousMonth] = useState(() => {
     const date = new Date();
     date.setMonth(date.getMonth() - 5);
     return date;
   });
-  const { barChartData } = useDashboard();
 
   return (
     <Card >

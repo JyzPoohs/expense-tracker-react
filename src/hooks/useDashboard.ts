@@ -4,7 +4,7 @@ import { getAllTransactions } from "@/services/transactionService";
 import type { DashboardSummary } from "@/types/dashboardSummary";
 import type { TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
-import type { ChartData } from "recharts/types/state/chartDataSlice";
+import type { ChartData } from "@/types/chart";
 
 export const useDashboard = () => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -31,11 +31,6 @@ export const useDashboard = () => {
     }
   };
 
-  const refreshDashboard = async () => {
-    await fetchDashboardSummary();
-    await fetchTransactions();
-  }
-
   const fetchDashboardBarChartData = async () => {
     try {
       const data = await getDashboardBarChartData();
@@ -43,6 +38,12 @@ export const useDashboard = () => {
     } catch (error) {
       console.error("Error fetching chart data: ", error);
     }
+  }
+
+  const refreshDashboard = async () => {
+    await fetchDashboardSummary();
+    await fetchTransactions();
+    await fetchDashboardBarChartData();
   }
 
   useEffect(() => {

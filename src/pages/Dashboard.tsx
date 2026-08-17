@@ -9,7 +9,7 @@ import DashboardBarChart from "@/components/dashboard/DashboardBarChart";
 import DashboardPieChart from "@/components/dashboard/DashboardPieChart";
 
 export const Dashboard = () => {
-  const { summary, transactions, refreshDashboard } = useDashboard();
+  const { summary, transactions, refreshDashboard, barChartData } = useDashboard();
 
   return (
     <div>
@@ -40,7 +40,7 @@ export const Dashboard = () => {
           ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
-        <DashboardBarChart />
+        <DashboardBarChart barChartData={barChartData}/>
         <DashboardPieChart />
       </div>
       <div>
