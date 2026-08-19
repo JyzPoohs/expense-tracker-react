@@ -6,3 +6,8 @@ export const getDashboardBarChartData = async () => {
     const response = await api.get(`${CHART_BASE_URL}/dashboard/barchart`);
     return response.data;
 }
+
+export const getDashboardPieChartData = async () => {
+    const response = await api.get(`${CHART_BASE_URL}/dashboard/piechart`);
+    return response.data;
+}

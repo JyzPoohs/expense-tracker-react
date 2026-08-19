@@ -12,37 +12,39 @@ import {
 import { dashboardPieChartConfig as chartConfig } from "@/config/ChartConfig";
 import { useState } from "react";
 import { formatChartDate } from "@/utils/date";
+import { useDashboard } from "@/hooks/useDashboard";
 
-const chartData = [
-  {
-    expense: "food",
-    total: 275,
-    fill: "var(--color-food)",
-  },
-  {
-    expense: "shopping",
-    total: 200,
-    fill: "var(--color-shopping)",
-  },
-  {
-    expense: "bills",
-    total: 187,
-    fill: "var(--color-bills)",
-  },
-  {
-    expense: "rental",
-    total: 173,
-    fill: "var(--color-rental)",
-  },
-  {
-    expense: "transport",
-    total: 90,
-    fill: "var(--color-transport)",
-  },
-];
+// const chartData = [
+//   {
+//     expense: "food",
+//     total: 275,
+//     fill: "var(--color-food)",
+//   },
+//   {
+//     expense: "shopping",
+//     total: 200,
+//     fill: "var(--color-shopping)",
+//   },
+//   {
+//     expense: "bills",
+//     total: 187,
+//     fill: "var(--color-bills)",
+//   },
+//   {
+//     expense: "rental",
+//     total: 173,
+//     fill: "var(--color-rental)",
+//   },
+//   {
+//     expense: "transport",
+//     total: 90,
+//     fill: "var(--color-transport)",
+//   },
+// ];
 
 export default function DashboardPieChart() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const { pieChartData } = useDashboard();
 
   return (
     <Card >
@@ -61,7 +63,7 @@ export default function DashboardPieChart() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={pieChartData}
               dataKey="total"
               nameKey="expense"
             />

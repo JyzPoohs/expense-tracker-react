@@ -10,10 +10,10 @@ import {
 import { dashboardBarChartConfig as chartConfig } from "@/config/ChartConfig";
 import { useState } from "react";
 import { formatChartDate } from "@/utils/date";
-import type { ChartData } from "@/types/chart";
+import type { DashboardBarChartData } from "@/types/chart";
 
 interface DashboardBarChartProps {
-  barChartData: ChartData[];
+  barChartData: DashboardBarChartData[];
 }
 
 export default function DashboardBarChart({
