@@ -12,7 +12,7 @@ import {
 import { dashboardPieChartConfig as chartConfig } from "@/config/ChartConfig";
 import { useState } from "react";
 import { formatChartDate } from "@/utils/date";
-import { useDashboard } from "@/hooks/useDashboard";
+import type { DashboardPieChartData } from "@/types/chart";
 
 const chartColors = [
   "var(--chart-1)",
@@ -27,9 +27,12 @@ const chartColors = [
   "var(--chart-10)",
 ];
 
-export default function DashboardPieChart() {
+interface DashboardPieChartProps {
+  pieChartData: DashboardPieChartData[];
+}
+
+export default function DashboardPieChart({ pieChartData }: DashboardPieChartProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const { pieChartData } = useDashboard();
 
   const chartDataWithColors = pieChartData.map((item, index) => ({
     ...item,
