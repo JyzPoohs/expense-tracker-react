@@ -1,134 +1,159 @@
-  # TorchEye Ledger
+# TorchEye Ledger — Frontend
 
-A full-stack Expense Tracker application built with **React**, **Spring Boot**, **Keycloak**, and **MySQL**. This project demonstrates a modern enterprise-style architecture with secure authentication, RESTful APIs, and Dockerized infrastructure.
+React SPA for a personal finance management application. Communicates with the Spring Boot backend via JWT-authenticated REST calls. Authentication is delegated to Keycloak using PKCE flow.
 
----
-
-## Features
-
-### Authentication & Security
-
-* User registration and login with Keycloak
-* OAuth2 / OpenID Connect authentication
-* JWT-based authorization
-* Protected REST APIs using Spring Security
-* Role-based access control
-
-### Expense Management
-
-* Create, update, and delete transactions
-* Create, update, and delete categories
-* Filter transactions by month, category, and transaction type
-* Dashboard summary with income, expense, and balance
-
-### User Management
-
-* Automatic user provisioning on first login
-* User data linked with Keycloak through `auth_user_id`
-* Separate application user data from identity management
+> **Repositories:** [Frontend](https://github.com/JyzPoohs/expense-tracker-react) · [Backend](https://github.com/JyzPoohs/expense-tracker) · [Infrastructure](https://github.com/JyzPoohs/expense-tracker-infra)
 
 ---
 
 ## Tech Stack
 
-### Frontend
-
-* React
-* TypeScript
-* Vite
-* Axios
-
-### Backend
-
-* Spring Boot
-* Spring Security
-* Spring Data JPA
-* Hibernate
-
-### Authentication
-
-* Keycloak
-* OAuth2 Resource Server
-* JWT
-
-### Database
-
-* MySQL
-* Separate databases for:
-
-  * Keycloak
-  * Expense Tracker
-
-### DevOps
-
-* Docker
-* Docker Compose
+| Layer | Technology |
+|---|---|
+| Framework | React 19 |
+| Language | TypeScript 6 |
+| Build Tool | Vite 8 |
+| Styling | Tailwind CSS v4 |
+| Component Library | shadcn/ui (Radix UI primitives) |
+| Charts | Recharts |
+| Tables | TanStack Table v8 |
+| Auth | Keycloak JS (PKCE flow) |
+| HTTP Client | Axios |
+| Form Validation | Zod |
+| Routing | React Router v7 |
+| Date Utilities | date-fns + react-day-picker |
+| Notifications | Sonner (toast) |
+| Icons | Lucide React |
+| Font | Geist Variable |
 
 ---
 
 ## Project Structure
 
-```text
-Frontend (React)
-        │
-        ▼
-Spring Boot REST API
-        │
-        ▼
-Spring Security + JWT
-        │
-        ▼
-MySQL Database
-        ▲
-        │
-Keycloak Authentication Server
+```
+src/
+├── api/              # Axios instance with auth interceptors
+├── auth/             # Keycloak config and AuthProvider
+├── components/
+│   ├── common/       # Reusable primitives (SearchBar, DatePicker, Select)
+│   ├── dashboard/    # BarChart, PieChart components
+│   ├── layouts/      # AppSidebar, Header, DataTable, ProtectedLayout
+│   ├── transaction/  # Create, Edit, View dialogs + TransactionForm
+│   ├── summary/      # SummaryCard
+│   └── ui/           # shadcn generated components
+├── config/           # Static configuration (chart config, sidebar items, etc.)
+├── hooks/            # Data-fetching hooks (useTransactions, useDashboard, useCategories)
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Profile.tsx
+│   ├── transaction/TransactionList.tsx
+│   └── settings/Settings.tsx, CategoriesSettings.tsx
+├── routes/           # AppRoutes with protected route wrappers
+├── services/         # API call functions per domain
+├── types/            # TypeScript interfaces
+└── utils/            # Date helpers, icon mapper
 ```
 
 ---
 
-## Getting Started
+## Pages
+
+| Route | Page | Description |
+|---|---|---|
+| `/` | Dashboard | Summary cards + 6-month bar chart + monthly expense pie chart |
+| `/transactions` | Transaction List | Filterable data table with full CRUD dialogs |
+| `/settings` | Settings | Tab-based settings shell |
+| `/settings/categories` | Category Settings | View system and custom categories |
+| `/profile` | Profile | User profile view |
+
+---
+
+## Completed Features
+
+- [x] Keycloak PKCE authentication with silent token refresh
+- [x] Protected routing — unauthenticated users redirected to Keycloak login
+- [x] Auto user provisioning on first login
+- [x] Transaction list with filters: type, category, month/year
+- [x] Create, view, edit, delete transactions via modal dialogs
+- [x] Dashboard: 6-month income vs expense bar chart
+- [x] Dashboard: Current month expense breakdown pie chart
+- [x] Dashboard: Summary cards (total income, total expense, net balance)
+- [x] System categories + user custom categories
+- [x] Category settings page
+- [x] Responsive sidebar layout with mobile sheet
+- [x] Dark / light theme toggle
+- [x] Toast notifications for all CRUD operations
+- [x] TypeScript strict typing throughout
+
+---
+
+## Roadmap
+
+### Phase 2 — Budget Management UI
+- [ ] Budget configuration page (set monthly limits per category)
+- [ ] Budget progress bars on Dashboard
+- [ ] Over-budget visual alerts
+
+### Phase 3 — Category Management (Write)
+- [ ] Create / edit / delete custom categories (currently read-only)
+- [ ] Per-category color picker and icon selector
+
+### Phase 4 — Search & Export
+- [ ] Full-text search across transaction notes and remarks
+- [ ] Arbitrary date range picker
+- [ ] Export transactions to CSV
+
+### Phase 5 — AI Financial Advisor UI
+- [ ] Dedicated "Insights" page
+- [ ] Monthly AI analysis panel with per-category breakdown and savings suggestions
+- [ ] Proactive alerts for budget overruns or unusual spending patterns
+
+### Phase 6 — UX Improvements
+- [ ] Pagination or infinite scroll on transaction list
+- [ ] Skeleton loaders during data fetch
+- [ ] Empty state illustrations
+- [ ] Edit history on transaction detail view
+
+### Phase 7 — Testing
+- [ ] Unit tests for hooks and utility functions (Vitest)
+- [ ] Component tests (React Testing Library)
+- [ ] E2E tests (Playwright)
+
+---
+
+## Local Development
 
 ### Prerequisites
 
-* Java 21+
-* Node.js 24+
-* Docker Desktop
-* MySQL (optional if using Docker)
+- Node.js 20+
+- Keycloak and MySQL running (see [infrastructure repo](https://github.com/JyzPoohs/expense-tracker-infra))
+- Backend API running (see [backend repo](https://github.com/JyzPoohs/expense-tracker))
 
-### Run the Project
-
-1. Start MySQL and Keycloak
+### Setup
 
 ```bash
-docker compose up
-```
+cp .env.example .env
+# Fill in your local Keycloak and API URLs
 
-2. Start the Spring Boot backend
-
-```bash
-./mvnw spring-boot:run
-```
-
-3. Start the React frontend
-
-```bash
 npm install
 npm run dev
 ```
 
----
+App runs at `http://localhost:5173`.
 
-## Current Progress
+### Environment Variables
 
-Implemented modules:
+| Variable | Description |
+|---|---|
+| `VITE_API_BASE_URL` | Backend API base URL (e.g. `http://localhost:8081`) |
+| `VITE_KEYCLOAK_URL` | Keycloak server URL (e.g. `http://localhost:8080`) |
+| `VITE_KEYCLOAK_REALM` | Keycloak realm name |
+| `VITE_KEYCLOAK_CLIENT_ID` | Keycloak client ID |
 
-* ✅ Keycloak authentication
-* ✅ Spring Security JWT authentication
-* ✅ User auto provisioning
-* ✅ Category management
-* ✅ Transaction management
-* ✅ Dashboard summary
-* ✅ Dockerized MySQL and Keycloak
-* ✅ RESTful API architecture
+### Build
 
-This project is actively being developed, and additional features will be added in future updates.
+```bash
+npm run build
+```
+
+Output in `dist/`.
