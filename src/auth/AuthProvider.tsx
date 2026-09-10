@@ -36,7 +36,6 @@ export function AuthProvider({ children }: Props) {
 
         if (authenticated) {
           setToken(keycloak.token);
-          console.log("Token:", keycloak.token);
 
           const parsed = keycloak.tokenParsed;
 
