@@ -1,6 +1,5 @@
 import {
   User2,
-  LogOut,
   LayoutDashboard,
   ArrowRightLeftIcon,
   Landmark,

@@ -1,6 +1,6 @@
 import { columns } from "@/types/transaction";
 import { DataTable } from "@/components/layouts/DataTable";
-import { SummaryCard } from "@/components/sumamry/SummaryCard";
+import { SummaryCard } from "@/components/summary/SummaryCard";
 import { summaryCardConfig } from "@/config/SummaryCardsConfig";
 import { CreateTransactionForm } from "../components/transaction/CreateTransactionDialog";
 import type { DashboardSummary } from "@/types/dashboardSummary";
