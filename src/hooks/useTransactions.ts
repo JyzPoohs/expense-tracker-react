@@ -17,6 +17,8 @@ export function useTransactions(filters: TransactionFilter) {
       const data = await getFilteredTransactions(filters);
 
       setTransactions(data);
+    } catch (error) {
+      console.error("Failed to load transactions:", error);
     } finally {
       setLoading(false);
     }
