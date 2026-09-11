@@ -4,13 +4,13 @@ import { getAllTransactions } from "@/services/transactionService";
 import type { DashboardSummary } from "@/types/dashboardSummary";
 import type { TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
-import type { DashboardBarChartData } from "@/types/chart";
+import type { DashboardBarChartData, DashboardPieChartData } from "@/types/chart";
 
 export const useDashboard = () => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [barChartData, setBarChartData] = useState<DashboardBarChartData[]>([]);
-  const [pieChartData, setPieChartData] = useState<DashboardBarChartData[]>([]);
+  const [pieChartData, setPieChartData] = useState<DashboardPieChartData[]>([]);
 
   const fetchDashboardSummary = async () => {
     try {
@@ -51,10 +51,13 @@ export const useDashboard = () => {
   }
 
   const refreshDashboard = async () => {
-    await fetchDashboardSummary();
-    await fetchTransactions();
-    await fetchDashboardBarChartData();
-    await fetchDashboardPieChartData();
+    await Promise.all([
+      fetchDashboardSummary(),
+      fetchTransactions(),
+      fetchDashboardBarChartData(),
+      fetchDashboardPieChartData()
+    ]
+    );
   }
 
   useEffect(() => {
