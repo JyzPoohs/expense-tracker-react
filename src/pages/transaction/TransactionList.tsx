@@ -52,7 +52,6 @@ export const TransactionListPage = () => {
       month: now.getMonth() + 1,
       year: now.getFullYear(),
     });
-    loadTransactions();
   };
 
   const handleDelete = async (id: number) => {
