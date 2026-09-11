@@ -51,10 +51,13 @@ export const useDashboard = () => {
   }
 
   const refreshDashboard = async () => {
-    await fetchDashboardSummary();
-    await fetchTransactions();
-    await fetchDashboardBarChartData();
-    await fetchDashboardPieChartData();
+    await Promise.all([
+      fetchDashboardSummary(),
+      fetchTransactions(),
+      fetchDashboardBarChartData(),
+      fetchDashboardPieChartData()
+    ]
+    );
   }
 
   useEffect(() => {
