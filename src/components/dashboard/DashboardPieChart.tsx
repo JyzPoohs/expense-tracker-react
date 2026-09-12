@@ -9,23 +9,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import { dashboardPieChartConfig as chartConfig } from "@/config/ChartConfig";
 import { useState } from "react";
 import { formatChartDate } from "@/utils/date";
 import type { DashboardPieChartData } from "@/types/chart";
-
-const chartColors = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-  "var(--chart-6)",
-  "var(--chart-7)",
-  "var(--chart-8)",
-  "var(--chart-9)",
-  "var(--chart-10)",
-];
+import { chartColors } from "@/types/chart";
 
 interface DashboardPieChartProps {
   pieChartData: DashboardPieChartData[];
@@ -38,6 +25,15 @@ export default function DashboardPieChart({ pieChartData }: DashboardPieChartPro
     ...item,
     fill: chartColors[index % chartColors.length],
   }));
+
+  const chartConfig = pieChartData.reduce((config, item, index) => {
+  config[item.expense] = {
+    label: item.expense,
+    color: chartColors[index % chartColors.length],
+  };
+
+  return config;
+}, {} as Record<string, { label: string; color: string }>);
 
   return (
     <Card >
