@@ -11,8 +11,8 @@ React SPA for a personal finance management application. Communicates with the S
 | Layer | Technology |
 |---|---|
 | Framework | React 19 |
-| Language | TypeScript 6 |
-| Build Tool | Vite 8 |
+| Language | TypeScript |
+| Build Tool | Vite |
 | Styling | Tailwind CSS v4 |
 | Component Library | shadcn/ui (Radix UI primitives) |
 | Charts | Recharts |
@@ -32,7 +32,7 @@ React SPA for a personal finance management application. Communicates with the S
 
 ```
 src/
-├── api/              # Axios instance with auth interceptors
+├── api/              # Axios instance with auth + global error interceptors
 ├── auth/             # Keycloak config and AuthProvider
 ├── components/
 │   ├── common/       # Reusable primitives (SearchBar, DatePicker, Select)
@@ -41,7 +41,7 @@ src/
 │   ├── transaction/  # Create, Edit, View dialogs + TransactionForm
 │   ├── summary/      # SummaryCard
 │   └── ui/           # shadcn generated components
-├── config/           # Static configuration (chart config, sidebar items, etc.)
+├── config/           # Static config (chart config, sidebar items)
 ├── hooks/            # Data-fetching hooks (useTransactions, useDashboard, useCategories)
 ├── pages/
 │   ├── Dashboard.tsx
@@ -73,13 +73,14 @@ src/
 - [x] Keycloak PKCE authentication with silent token refresh
 - [x] Protected routing — unauthenticated users redirected to Keycloak login
 - [x] Auto user provisioning on first login
+- [x] Global 401/403/500 error handling via Axios response interceptor
 - [x] Transaction list with filters: type, category, month/year
 - [x] Create, view, edit, delete transactions via modal dialogs
 - [x] Dashboard: 6-month income vs expense bar chart
 - [x] Dashboard: Current month expense breakdown pie chart
 - [x] Dashboard: Summary cards (total income, total expense, net balance)
-- [x] System categories + user custom categories
-- [x] Category settings page
+- [x] Dashboard data loaded in parallel (`Promise.all`)
+- [x] System categories + user custom categories (read-only settings page)
 - [x] Responsive sidebar layout with mobile sheet
 - [x] Dark / light theme toggle
 - [x] Toast notifications for all CRUD operations
@@ -89,19 +90,19 @@ src/
 
 ## Roadmap
 
-### Phase 2 — Budget Management UI
+### Sprint 2 — Feature Completion *(current)*
 - [ ] Budget configuration page (set monthly limits per category)
 - [ ] Budget progress bars on Dashboard
 - [ ] Over-budget visual alerts
 
 ### Phase 3 — Category Management (Write)
-- [ ] Create / edit / delete custom categories (currently read-only)
-- [ ] Per-category color picker and icon selector
+- [ ] Create / edit / delete custom categories from Settings UI (KAN-85)
+- [ ] Per-category color picker and icon selector (KAN-50)
 
 ### Phase 4 — Search & Export
 - [ ] Full-text search across transaction notes and remarks
-- [ ] Arbitrary date range picker
-- [ ] Export transactions to CSV
+- [ ] Arbitrary date range picker (KAN-70)
+- [ ] Export transactions to CSV (KAN-71)
 
 ### Phase 5 — AI Financial Advisor UI
 - [ ] Dedicated "Insights" page
@@ -109,31 +110,29 @@ src/
 - [ ] Proactive alerts for budget overruns or unusual spending patterns
 
 ### Phase 6 — UX Improvements
-- [ ] Pagination or infinite scroll on transaction list
-- [ ] Skeleton loaders during data fetch
+- [ ] Pagination on transaction list (KAN-69)
+- [ ] Skeleton loaders during data fetch (KAN-72)
 - [ ] Empty state illustrations
-- [ ] Edit history on transaction detail view
 
 ### Phase 7 — Testing
-- [ ] Unit tests for hooks and utility functions (Vitest)
+- [ ] Unit tests for hooks and utility functions (Vitest) (KAN-74)
 - [ ] Component tests (React Testing Library)
-- [ ] E2E tests (Playwright)
+- [ ] E2E tests (Playwright) (KAN-75)
 
 ---
 
 ## Local Development
 
 ### Prerequisites
-
 - Node.js 20+
-- Keycloak and MySQL running (see [infrastructure repo](https://github.com/JyzPoohs/expense-tracker-infra))
-- Backend API running (see [backend repo](https://github.com/JyzPoohs/expense-tracker))
+- Keycloak and MySQL running — see [infrastructure repo](https://github.com/JyzPoohs/expense-tracker-infra)
+- Backend API running — see [backend repo](https://github.com/JyzPoohs/expense-tracker)
 
 ### Setup
 
 ```bash
 cp .env.example .env
-# Fill in your local Keycloak and API URLs
+# Edit .env with your local values
 
 npm install
 npm run dev
@@ -143,12 +142,12 @@ App runs at `http://localhost:5173`.
 
 ### Environment Variables
 
-| Variable | Description |
-|---|---|
-| `VITE_API_BASE_URL` | Backend API base URL (e.g. `http://localhost:8081`) |
-| `VITE_KEYCLOAK_URL` | Keycloak server URL (e.g. `http://localhost:8080`) |
-| `VITE_KEYCLOAK_REALM` | Keycloak realm name |
-| `VITE_KEYCLOAK_CLIENT_ID` | Keycloak client ID |
+| Variable | Default | Description |
+|---|---|---|
+| `VITE_API_BASE_URL` | `http://localhost:1331` | Backend API base URL |
+| `VITE_KEYCLOAK_URL` | `http://localhost:1880` | Keycloak server URL |
+| `VITE_KEYCLOAK_REALM` | `expense-realm` | Keycloak realm name |
+| `VITE_KEYCLOAK_CLIENT_ID` | `expense-client` | Keycloak client ID |
 
 ### Build
 
